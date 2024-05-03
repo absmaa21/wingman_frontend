@@ -1,118 +1,56 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import {StatusBar} from 'react-native';
+import { initLogSystem, logInfo } from './backend/utils/log-system/log-system';
+import { APP_BUILD, Color, EAppBuild } from './Settings';
+import changeNavigationBarColor from 'react-native-navigation-bar-color'
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import SplashScreen from './frontend/screens/SplashScreen';
+import RsoScreen from './frontend/screens/RsoScreen';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import BottomBarNavigation from './frontend/components/BottomBarNavigation';
+import HomeScreen from './frontend/screens/HomeScreen';
+import ProfileScreen from './frontend/screens/ProfileScreen';
+import StoreScreen from './frontend/screens/StoreScreen';
+import OthersScreen from './frontend/screens/OthersScreen';
+import CollectionScreen from './frontend/screens/misc/CollectionScreen';
+import { ApiProvider } from './frontend/contexts/apiContext';
+import { ValorantClientProvider } from './frontend/contexts/valorantClientContext';
+import ValorantApi from './backend/valorant-api/api';
+import ValorantClient from './backend/api/clients/valorant-client';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const Stack = createNativeStackNavigator()
+const Tab = createBottomTabNavigator()
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+function Main() {
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
+      <Tab.Navigator tabBar={props => <BottomBarNavigation {...props} />}>
+          <Tab.Screen name={'Home'} component={HomeScreen} options={{headerShown: false}} />
+          <Tab.Screen name={'FavouritePage'} component={CollectionScreen} options={{headerShown: false}} />
+          <Tab.Screen name={'Profile'} component={ProfileScreen} options={{headerShown: false}} />
+          <Tab.Screen name={'Store'} component={StoreScreen} options={{headerShown: false}} />
+          <Tab.Screen name={'Other'} component={OthersScreen} options={{headerShown: false}} />
+      </Tab.Navigator>
   );
 }
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
+export default function App(): React.JSX.Element {
+  initLogSystem(false, APP_BUILD === EAppBuild.PUBLIC).then(() => logInfo('App.tsx: Log System started'))
+  StatusBar.setBackgroundColor(Color.backgroundPrimary)
+  changeNavigationBarColor(Color.backgroundPrimary)
+  
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <ApiProvider api={new ValorantApi()}>
+      <ValorantClientProvider client={new ValorantClient()}>
+        <NavigationContainer>
+          <Stack.Navigator>
+            <Stack.Screen name='Splash' component={SplashScreen} options={{headerShown: false}} />
+            <Stack.Screen name='Login' component={RsoScreen} options={{headerShown: false}} />
+            <Stack.Screen name='Main' component={Main} options={{headerShown: false}} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </ValorantClientProvider>
+    </ApiProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
-
-export default App;
