@@ -11,10 +11,10 @@ import {
     getPlayerPositionColor,
 } from '../helpers/Helpers_MatchHistory';
 import PropTypes from "prop-types";
-import {MatchDetailsResponse} from "../../types/valapidocs.techchrism.me/PVP_ENDPOINTS/MatchDetails";
+import {IMatchDetailsResponse} from "../../types/valapidocs.techchrism.me/PVP_ENDPOINTS/MatchDetails";
 
 MatchHistoryCard.propTypes = {
-    matchDetails: PropTypes.object.isRequired,
+    matchDetails: PropTypes.object.isRequired as unknown as IMatchDetailsResponse,
     puuid: PropTypes.string.isRequired,
     setChosenMatch: PropTypes.func.isRequired,
 }

@@ -18,6 +18,7 @@ import { ApiProvider } from './frontend/contexts/apiContext';
 import { ValorantClientProvider } from './frontend/contexts/valorantClientContext';
 import ValorantApi from './backend/valorant-api/api';
 import ValorantClient from './backend/api/clients/valorant-client';
+import Toast from 'react-native-toast-message';
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -50,6 +51,7 @@ export default function App(): React.JSX.Element {
             <Stack.Screen name='Main' component={Main} options={{headerShown: false}} />
           </Stack.Navigator>
         </NavigationContainer>
+        <Toast />
       </ValorantClientProvider>
     </ApiProvider>
   );

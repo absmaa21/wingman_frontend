@@ -100,6 +100,7 @@ interface IMatchDetails {
                   friendlyFireIncoming?: number | undefined;
                   friendlyFireOutgoing?: number | undefined;
                   mouseMovement?: number | undefined;
+                  selfDamage?: number | undefined;
                   stayedInSpawnRounds?: number | undefined;
               }
             | undefined;

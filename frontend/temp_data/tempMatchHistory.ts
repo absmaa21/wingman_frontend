@@ -1,5 +1,6 @@
-const tempMatchHistory = {
-    "b11d7c3f-7685-4252-9a68-6db6856ca5be": {
+import {IMatchDetailsResponse} from "../../types/valapidocs.techchrism.me/PVP_ENDPOINTS/MatchDetails.ts";
+
+const tempMatchDetails: IMatchDetailsResponse = {
         "matchInfo": {
             "matchId": "b11d7c3f-7685-4252-9a68-6db6856ca5be",
             "mapId": "/Game/Maps/Bonsai/Bonsai",
@@ -18,7 +19,7 @@ const tempMatchHistory = {
             "isRanked": true,
             "isMatchSampled": false,
             "seasonId": "ec876e6c-43e8-fa63-ffc1-2e8d4db25525",
-            "completionState": "Completed", 
+            "completionState": "Completed",
             "platformType": "PC",
             "premierMatchInfo": {},
             "partyRRPenalties": {
@@ -316,7 +317,7 @@ const tempMatchHistory = {
                     "score": 4804,
                     "roundsPlayed": 23,
                     "kills": 18,
-                    "deaths": 16, 
+                    "deaths": 16,
                     "assists": 2,
                     "playtimeMillis": 2353162,
                     "abilityCasts": {
@@ -36635,7 +36636,6 @@ const tempMatchHistory = {
                 }
             }
         ]
-    }
 }
 
-export default tempMatchHistory
+export default tempMatchDetails
