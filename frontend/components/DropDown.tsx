@@ -4,14 +4,16 @@ import Container from './Container.tsx';
 import {
   Modal,
   ScrollView,
+  StyleProp,
   StyleSheet,
   Text,
   TouchableOpacity,
+  View,
+  ViewProps,
+  ViewStyle,
 } from 'react-native';
 import {Color} from '../../Settings.ts';
 import Column from './Column.tsx';
-import {EJustifyContent} from '../../types/TypeScriptInterfaces.ts';
-import Wrap from './Wrap.tsx';
 
 DropDown.propTypes = {
   title: PropTypes.string.isRequired,
@@ -22,7 +24,6 @@ DropDown.propTypes = {
 
 function DropDown(props: PropTypes.InferProps<typeof DropDown.propTypes>) {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-
   function handleItemPress(item: string) {
     props.setItem(item);
     setModalVisible(false);
@@ -42,20 +43,25 @@ function DropDown(props: PropTypes.InferProps<typeof DropDown.propTypes>) {
       </Container>
       <Modal animationType={'slide'} visible={modalVisible} transparent>
         <ScrollView contentContainerStyle={styles.modalContainer}>
-          <Wrap paddingH={8} gap={6} paddingTop={24}>
+          <Column paddingH={8} gap={6}>
             {props.data.map((item: string, index: number) => {
               return (
                 <TouchableOpacity
-                  key={index}
                   activeOpacity={0.8}
                   onPress={() => handleItemPress(item)}>
-                  <Container padding={24}>
+                  <Container
+                    key={index}
+                    padding={24}
+                    hasTopLeftCorner={index === 0}
+                    hasTopRightCorner={index === 0}
+                    hasBottomLeftCorner={index === props.data.length - 1}
+                    hasBottomRightCorner={index === props.data.length - 1}>
                     <Text style={styles.modalText}>{item.toUpperCase()}</Text>
                   </Container>
                 </TouchableOpacity>
               );
             })}
-          </Wrap>
+          </Column>
         </ScrollView>
       </Modal>
     </TouchableOpacity>
@@ -70,9 +76,11 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     flex: 1,
+    justifyContent: 'center',
     backgroundColor: '#000e',
   },
   modalText: {
+    width: '100%',
     fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'center',

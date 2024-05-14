@@ -46,10 +46,7 @@ export default function LivePlayerCard(
 ) {
   const playerObj: IPlayer = props.playerObj.item;
   const screenWidth = Dimensions.get('window').width;
-  const maxNumOfMatches = parseInt(
-    ((screenWidth - 80) / 24 - 0.5).toFixed(0),
-    10,
-  );
+  const maxNumOfMatches = parseInt(((screenWidth - 80) / 24 - 0.5).toFixed(0));
 
   const lastMatches = [
     1, 1, 0, 2, 1, 1, 0, 0, 0, 0, 1, 2, 0, 0, 1, 1, 0, 0, 1, 2, 2, 1, 1, 0,
@@ -109,6 +106,7 @@ export default function LivePlayerCard(
           <InfoBox title={'WR'} detail={`${playerWR}% (${playerMatchCount})`} />
           <InfoBox title={'KDA'} detail={`${playerKDA} (${playerKD})`} />
         </Row>
+
         <View style={styles.matchHistoryBox}>
           {lastMatches.map((match, index) => {
             if (index >= maxNumOfMatches) {

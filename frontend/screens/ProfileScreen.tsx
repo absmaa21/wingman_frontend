@@ -1,6 +1,21 @@
 import React, {useEffect, useState} from 'react';
-import {FlatList, StyleSheet, View} from 'react-native';
+import {
+  Alert,
+  Dimensions,
+  FlatList,
+  Image,
+  ImageStyle,
+  Linking,
+  Modal,
+  StyleProp,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {APP_BUILD, Color, EAppBuild} from '../../Settings';
+import {levelImage} from '../../statics/Mappings';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MatchHistoryCard from '../components/MatchHistoryCard';
 import MatchHistoryScreen from '../components/MatchHistoryScreen';
 import PropTypes from 'prop-types';
@@ -14,9 +29,15 @@ import {
 } from '../../types/valapidocs.techchrism.me/PVP_ENDPOINTS/MatchHistory';
 import {IMatchDetailsResponse} from '../../types/valapidocs.techchrism.me/PVP_ENDPOINTS/MatchDetails';
 import MatchDetailsEndpoint from '../../backend/api/endpoints/pvp/match-details';
+import tempMatchHistory from '../temp_data/tempMatchHistory';
+import IMatchDetails from '../../backend/api/types/pvp/match-details';
+import {IQueueSkill} from '../../types/valapidocs.techchrism.me/PVP_ENDPOINTS/PlayerMMR';
 import Container from '../components/Container';
 import Row from '../components/Row';
+import PlayerName from '../components/PlayerName.tsx';
+import InfoBox from '../components/InfoBox.tsx';
 import Column from '../components/Column.tsx';
+import PlayerLevel from '../components/PlayerLevel.tsx';
 import ProfileHeader from '../components/ProfileHeader.tsx';
 import ProfileRank from '../components/ProfileRank.tsx';
 import ProfileStat from '../components/ProfileStat.tsx';
@@ -74,6 +95,7 @@ export default function ProfileScreen(
 
   function loadMatchDetails() {
     if (APP_BUILD === EAppBuild.FRONTEND) {
+      // @ts-ignore
       setMatchDetails([tempMatchDetails]);
       return;
     }
@@ -106,7 +128,7 @@ export default function ProfileScreen(
       !lastFetchTime || Date.now() - lastFetchTime >= 5 * 60 * 1000;
 
     if (canFetch) {
-      logInfo('ProfileScreen.tsx: Fetching Profile...');
+      console.log('ProfileScreen.tsx: Fetching Profile...');
       loadMatchHistory();
       setLastFetchTime(Date.now());
     }
@@ -114,14 +136,14 @@ export default function ProfileScreen(
   }, [reloadRequested]);
 
   useEffect(() => {
-    if (fetchedMatchHistory.length > 0 || APP_BUILD === EAppBuild.FRONTEND) {
+    if (fetchedMatchHistory.length > 0) {
       loadMatchDetails();
     }
   }, [fetchedMatchHistory]);
 
   const playerName = 'orcan';
   const playerTag = '420';
-  const playerLevel = 101;
+  const playerLevel = 98;
 
   const playerCurrentTier = 24;
   const playerCurrentTierRR = 195;
@@ -237,13 +259,12 @@ export default function ProfileScreen(
       </Row>
 
       <FlatList
-        contentContainerStyle={styles.flatList}
         data={matchDetails}
         renderItem={item => {
           return (
             <MatchHistoryCard
               matchDetails={item.item}
-              puuid={puuid ?? '92fc5f4b-de99-596c-9122-875625c115b4'}
+              puuid={props.puuid ?? ''}
               setChosenMatch={setChosenMatch}
             />
           );
@@ -266,8 +287,5 @@ const styles = StyleSheet.create({
     padding: 8,
     gap: 8,
     backgroundColor: Color.backgroundPrimary,
-  },
-  flatList: {
-    gap: 8,
   },
 });

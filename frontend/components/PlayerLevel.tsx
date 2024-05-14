@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  Dimensions,
   Image,
   ImageStyle,
   StyleProp,
@@ -22,7 +21,7 @@ function PlayerLevel(
   props: PropTypes.InferProps<typeof PlayerLevel.propTypes>,
 ) {
   const borderLevel =
-    props.level < 20
+    props.level || props.level < 20
       ? 1
       : props.level < 500
       ? props.level - (props.level % 20)
