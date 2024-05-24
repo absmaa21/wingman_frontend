@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {FlatList, StyleSheet, View} from 'react-native';
+import {FlatList, RefreshControl, ScrollView, StyleSheet} from 'react-native';
 import {APP_BUILD, Color, EAppBuild} from '../../Settings';
 import MatchHistoryCard from '../components/MatchHistoryCard';
 import MatchHistoryScreen from '../components/MatchHistoryScreen';
@@ -23,6 +23,10 @@ import ProfileStat from '../components/ProfileStat.tsx';
 import tempMatchDetails from '../temp_data/tempMatchHistory';
 import DropDown from '../components/DropDown.tsx';
 import {EJustifyContent} from '../../types/TypeScriptInterfaces.ts';
+import {IPlayerMMRResponse} from '../../types/valapidocs.techchrism.me/PVP_ENDPOINTS/PlayerMMR.ts';
+import {loadFetchContent, loadPlayerMMR} from '../interface.ts';
+import {getPeakRank, getSeasons, IPeakRank} from '../helpers/ProfileHelpers.ts';
+import {IFetchContentResponse} from '../../types/valapidocs.techchrism.me/PVP_ENDPOINTS/FetchContent.ts';
 
 ProfileScreen.propType = {
   puuid: PropTypes.string,
@@ -39,7 +43,11 @@ export default function ProfileScreen(
 
   const [fetchedMatchHistory, setFetchedMatchHistory] = useState<IMatch[]>([]);
   const [matchDetails, setMatchDetails] = useState<IMatchDetailsResponse[]>([]);
-  const [profileData, setProfileData] = useState({});
+  const [profileData, setProfileData] = useState<
+    IPlayerMMRResponse | undefined
+  >();
+  const [fetchContent, setFetchContent] = useState<IFetchContentResponse>();
+  const [peakRank, setPeakRank] = useState<IPeakRank>();
   const [lastFetchTime, setLastFetchTime] = useState<number | undefined>(
     undefined,
   );
@@ -103,15 +111,25 @@ export default function ProfileScreen(
   useEffect(() => {
     // Check if the last fetch was more than 5 minutes ago
     const canFetch =
-      !lastFetchTime || Date.now() - lastFetchTime >= 5 * 60 * 1000;
+      !lastFetchTime || Date.now() - lastFetchTime >= 0.1 * 60 * 1000;
 
     if (canFetch) {
-      logInfo('ProfileScreen.tsx: Fetching Profile...');
+      logInfo('ProfileScreen.tsx: Fetching Data ...');
+      loadPlayerMMR(api, puuid!, setProfileData);
+      loadFetchContent(api, setFetchContent).then(() => {});
       loadMatchHistory();
       setLastFetchTime(Date.now());
     }
     setReloadRequested(false);
   }, [reloadRequested]);
+
+  useEffect(() => {
+    getPeakRank(
+      profileData?.QueueSkills.competitive!,
+      fetchContent?.Seasons!,
+      setPeakRank,
+    );
+  }, [profileData, fetchContent]);
 
   useEffect(() => {
     if (fetchedMatchHistory.length > 0 || APP_BUILD === EAppBuild.FRONTEND) {
@@ -122,13 +140,6 @@ export default function ProfileScreen(
   const playerName = 'orcan';
   const playerTag = '420';
   const playerLevel = 101;
-
-  const playerCurrentTier = 24;
-  const playerCurrentTierRR = 195;
-  const playerCurrentRankPosition = 13934;
-  const playerPeakTier = 26;
-  const playerPeakTierRR = 421;
-  const playerPeakRankPosition = 3472;
 
   const playerDamageRoundDelta = 117.3;
   const playerKD = 1.29;
@@ -168,7 +179,14 @@ export default function ProfileScreen(
   ];
 
   return (
-    <View style={styles.container}>
+    <ScrollView
+      contentContainerStyle={styles.container}
+      refreshControl={
+        <RefreshControl
+          refreshing={reloadRequested}
+          onRefresh={() => setReloadRequested(true)}
+        />
+      }>
       {profileData && (
         <Column gap={4}>
           <ProfileHeader
@@ -180,16 +198,17 @@ export default function ProfileScreen(
           />
           <Row>
             <ProfileRank
-              tier={playerCurrentTier}
-              rr={playerCurrentTierRR}
-              rank={playerCurrentRankPosition}
+              tier={profileData.LatestCompetitiveUpdate.TierAfterUpdate}
+              rr={profileData.LatestCompetitiveUpdate.RankedRatingAfterUpdate}
             />
-            <ProfileRank
-              tier={playerPeakTier}
-              rr={playerPeakTierRR}
-              rank={playerPeakRankPosition}
-              season={'E4A2'}
-            />
+            {peakRank && (
+              <ProfileRank
+                tier={peakRank.tier}
+                rr={peakRank.rr}
+                rank={peakRank.rank}
+                season={peakRank.season}
+              />
+            )}
           </Row>
 
           <Row>
@@ -256,7 +275,7 @@ export default function ProfileScreen(
           setChosenMatch={setChosenMatch}
         />
       )}
-    </View>
+    </ScrollView>
   );
 }
 

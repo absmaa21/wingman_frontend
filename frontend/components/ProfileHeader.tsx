@@ -57,7 +57,7 @@ function ProfileHeader(
             />
           </Row>
           <Row padding={4} paddingH={12}>
-            <PlayerName name={props.name} tag={props.tag} />
+            <PlayerName name={props.name} tag={props.tag} width={224} />
             <Text style={styles.profileTitle}>{props.title}</Text>
           </Row>
         </Column>

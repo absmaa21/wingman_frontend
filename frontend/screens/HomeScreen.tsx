@@ -1,5 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  BackHandler,
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {Color} from '../../Settings';
 import LivePlayerCard from '../components/LivePlayerCard';
 import {tempCurrentGame_Competitive} from '../temp_data/tempCurrentGame';
@@ -19,6 +26,7 @@ import {
   IPlayer,
 } from '../../types/valapidocs.techchrism.me/PVP_ENDPOINTS/CurrentGame.ts';
 import {EJustifyContent} from '../../types/TypeScriptInterfaces.ts';
+import ProfileScreen from './ProfileScreen.tsx';
 
 export default function HomeScreen() {
   const api = useApi();
@@ -31,6 +39,7 @@ export default function HomeScreen() {
   const [chosenPlayer, setChosenPlayer] = useState<IPlayer | undefined>(
     undefined,
   );
+  const [chosenProfile, setChosenProfile] = useState<string | undefined>();
 
   // user data
   const [currentGame, setCurrentGame] = useState<
@@ -72,9 +81,18 @@ export default function HomeScreen() {
 
   function renderPlayerCard(item: any) {
     return (
-      <LivePlayerCard playerObj={item} setChosenPlayer={setChosenPlayer} />
+      <LivePlayerCard
+        playerObj={item}
+        setChosenPlayer={setChosenPlayer}
+        setChosenProfile={setChosenProfile}
+      />
     );
   }
+
+  BackHandler.addEventListener('hardwareBackPress', function () {
+    setChosenProfile(undefined);
+    return true;
+  });
 
   return (
     <View style={styles.container}>
@@ -128,6 +146,12 @@ export default function HomeScreen() {
           handleCloseModal={() => setChosenPlayer(undefined)}
         />
       )}
+
+      {chosenProfile && (
+        <View style={styles.profileScreenStyle}>
+          <ProfileScreen puuid={chosenProfile} />
+        </View>
+      )}
     </View>
   );
 }
@@ -163,5 +187,10 @@ const styles = StyleSheet.create({
   flatList: {
     gap: 8,
     paddingBottom: 24,
+  },
+  profileScreenStyle: {
+    flex: 1,
+    position: 'absolute',
+    minHeight: '110%',
   },
 });

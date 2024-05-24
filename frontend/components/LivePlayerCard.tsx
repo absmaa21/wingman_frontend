@@ -5,6 +5,7 @@ import {
   StyleProp,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
   ViewStyle,
 } from 'react-native';
@@ -22,7 +23,7 @@ import InfoBox from './InfoBox.tsx';
 import Row from './Row.tsx';
 import Column from './Column.tsx';
 import {EJustifyContent} from '../../types/TypeScriptInterfaces.ts';
-import {EGameState} from '../../types/GameState.ts';
+import TextTicker from 'react-native-text-ticker';
 
 function renderRightActions() {
   return (
@@ -39,6 +40,7 @@ function renderRightActions() {
 LivePlayerCard.propTypes = {
   playerObj: PropTypes.object.isRequired as unknown as IPlayer,
   setChosenPlayer: PropTypes.func.isRequired,
+  setChosenProfile: PropTypes.func.isRequired,
 };
 
 export default function LivePlayerCard(
@@ -79,57 +81,71 @@ export default function LivePlayerCard(
   }
 
   return (
-    <GestureHandlerRootView>
-      <Swipeable
-        childrenContainerStyle={styles.container}
-        renderRightActions={renderRightActions}
-        onSwipeableOpen={handleSwipeableOpen}
-        overshootFriction={10}>
-        <Image
-          source={{
-            uri: `https://media.valorant-api.com/agents/${playerObj.CharacterID}/displayicon.png`,
-          }}
-          style={styles.agentImage}
-          resizeMode={'contain'}
-        />
-        <Column align={EJustifyContent.CENTER}>
-          <PlayerName name={playerName} tag={playerTag} fontSize={14} center />
-          <PlayerLevel
-            level={playerObj.PlayerIdentity.AccountLevel}
-            size={0.7}
+    <TouchableOpacity
+      activeOpacity={0.8}
+      onPress={() => props.setChosenProfile(playerObj.Subject)}>
+      <GestureHandlerRootView>
+        <Swipeable
+          childrenContainerStyle={styles.container}
+          renderRightActions={renderRightActions}
+          onSwipeableOpen={handleSwipeableOpen}
+          overshootFriction={10}>
+          <Image
+            source={{
+              uri: `https://media.valorant-api.com/agents/${playerObj.CharacterID}/displayicon.png`,
+            }}
+            style={styles.agentImage}
+            resizeMode={'contain'}
           />
-        </Column>
-        <Row align={EJustifyContent.AROUND} flex={1}>
-          <PlayerRank
-            tier={playerObj.SeasonalBadgeInfo.Rank}
-            rr={playerCurrentTierRR}
-            size={0.43}
-            marginBottom={0}
-          />
-          <InfoBox title={'WR'} detail={`${playerWR}% (${playerMatchCount})`} />
-          <InfoBox title={'KDA'} detail={`${playerKDA} (${playerKD})`} />
-        </Row>
-        <View style={styles.matchHistoryBox}>
-          {lastMatches.map((match, index) => {
-            if (index >= maxNumOfMatches) {
-              return;
-            }
+          <Column align={EJustifyContent.CENTER}>
+            <PlayerName
+              name={playerName}
+              tag={playerTag}
+              fontSize={14}
+              center
+            />
+            <PlayerLevel
+              level={playerObj.PlayerIdentity.AccountLevel}
+              size={0.7}
+            />
+          </Column>
+          <Row align={EJustifyContent.AROUND} flex={1}>
+            <PlayerRank
+              tier={playerObj.SeasonalBadgeInfo.Rank}
+              rr={playerCurrentTierRR}
+              size={0.43}
+              marginBottom={0}
+            />
+            <InfoBox
+              title={'WR'}
+              detail={`${playerWR}% (${playerMatchCount})`}
+            />
+            <InfoBox title={'KDA'} detail={`${playerKDA} (${playerKD})`} />
+          </Row>
+          <View style={styles.matchHistoryBox}>
+            {lastMatches.map((match, index) => {
+              if (index >= maxNumOfMatches) {
+                return;
+              }
 
-            const style: StyleProp<ViewStyle> = {
-              backgroundColor:
-                match === 0
-                  ? Color.valorantCyan
-                  : match === 1
-                  ? Color.valorantRedDark
-                  : Color.valorantYellowDark,
-              height: index === 0 ? 3 : 2,
-            };
+              const style: StyleProp<ViewStyle> = {
+                backgroundColor:
+                  match === 0
+                    ? Color.valorantCyan
+                    : match === 1
+                    ? Color.valorantRedDark
+                    : Color.valorantYellowDark,
+                height: index === 0 ? 3 : 2,
+              };
 
-            return <View key={index} style={[styles.matchRectangle, style]} />;
-          })}
-        </View>
-      </Swipeable>
-    </GestureHandlerRootView>
+              return (
+                <View key={index} style={[styles.matchRectangle, style]} />
+              );
+            })}
+          </View>
+        </Swipeable>
+      </GestureHandlerRootView>
+    </TouchableOpacity>
   );
 }
 

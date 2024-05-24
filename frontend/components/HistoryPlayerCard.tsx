@@ -1,9 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Image, StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
+import {
+  Image,
+  StyleProp,
+  StyleSheet,
+  Text,
+  View,
+  ViewStyle,
+} from 'react-native';
 import {Color} from '../../Settings';
 import InfoBox from './InfoBox';
 import {IPlayerInfo} from '../../types/valapidocs.techchrism.me/PVP_ENDPOINTS/MatchDetails.ts';
+import Column from './Column.tsx';
+import PlayerName from './PlayerName.tsx';
+import {EJustifyContent} from '../../types/TypeScriptInterfaces.ts';
+import Row from './Row.tsx';
 
 HistoryPlayerCard.propTypes = {
   player: PropTypes.object.isRequired as unknown as IPlayerInfo,
@@ -28,23 +39,27 @@ function HistoryPlayerCard(
         resizeMode={'contain'}
       />
 
-      <InfoBox
-        title={player.gameName}
-        titleExtra={`#${player.tagLine}`}
-        detail={`Lvl ${player.accountLevel}`}
-      />
-      <Image
-        style={styles.rankImage}
-        resizeMode={'contain'}
-        source={{
-          uri: `https://media.valorant-api.com/competitivetiers/03621f52-342b-cf4e-4f86-9350a49c6d04/${player.competitiveTier}/largeicon.png`,
-        }}
-      />
-      <InfoBox title={'WS'} detail={'999'} />
-      <InfoBox title={'Score'} detail={player.stats?.score.toString() ?? '0'} />
-      <InfoBox title={'K'} detail={player.stats?.kills.toString() ?? '0'} />
-      <InfoBox title={'D'} detail={player.stats?.deaths.toString() ?? '0'} />
-      <InfoBox title={'A'} detail={player.stats?.assists.toString() ?? '0'} />
+      <Column gap={0} align={EJustifyContent.CENTER}>
+        <PlayerName name={player.gameName} tag={player.tagLine} />
+        <Text>Lvl {player.accountLevel}</Text>
+      </Column>
+      <Row align={EJustifyContent.AROUND} flex={1}>
+        <Image
+          style={styles.rankImage}
+          resizeMode={'contain'}
+          source={{
+            uri: `https://media.valorant-api.com/competitivetiers/03621f52-342b-cf4e-4f86-9350a49c6d04/${player.competitiveTier}/largeicon.png`,
+          }}
+        />
+        <InfoBox title={'WS'} detail={'999'} />
+        <InfoBox
+          title={'Score'}
+          detail={player.stats?.score.toString() ?? '0'}
+        />
+        <InfoBox title={'K'} detail={player.stats?.kills.toString() ?? '0'} />
+        <InfoBox title={'D'} detail={player.stats?.deaths.toString() ?? '0'} />
+        <InfoBox title={'A'} detail={player.stats?.assists.toString() ?? '0'} />
+      </Row>
     </View>
   );
 }
@@ -52,7 +67,6 @@ function HistoryPlayerCard(
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-between',
     flexDirection: 'row',
     overflow: 'hidden',
     paddingRight: 12,

@@ -11,7 +11,6 @@ import {
 import {Color} from '../../Settings.ts';
 import Container from './Container.tsx';
 import {EJustifyContent} from '../../types/TypeScriptInterfaces.ts';
-import Column from './Column.tsx';
 
 ProfileRank.propTypes = {
   tier: PropTypes.number.isRequired,
@@ -62,7 +61,7 @@ function ProfileRank(
       <Text style={[styles.rr, isPeak ? right8Style : left8Style]}>
         {props.rr} RR
       </Text>
-      {props.rank && (
+      {!!props.rank && (
         <Text style={[styles.rank, isPeak ? right8Style : left8Style]}>
           #{props.rank}
         </Text>
@@ -82,7 +81,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: 78,
-    height: 78,
+    aspectRatio: 1,
   },
   rr: {
     position: 'absolute',

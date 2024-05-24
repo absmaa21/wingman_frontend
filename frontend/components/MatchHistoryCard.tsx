@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  BackHandler,
   Dimensions,
   Image,
   StyleSheet,
@@ -50,10 +51,16 @@ export default function MatchHistoryCard(props: any) {
   );
   const playerPosColor = getPlayerPositionColor(playerPosition);
 
+  BackHandler.addEventListener('hardwareBackPress', function () {
+    props.setChosenMatch(undefined);
+    return true;
+  });
+
   return (
     <TouchableOpacity
       style={styles.container}
-      onPress={() => props.setChosenMatch(matchDetails)}>
+      onPress={() => props.setChosenMatch(matchDetails)}
+      activeOpacity={0.8}>
       <View
         style={[styles.winIndicator, {backgroundColor: winIndicatorColor}]}
       />

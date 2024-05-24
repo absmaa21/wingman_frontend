@@ -9,8 +9,6 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {Color} from '../../Settings.ts';
-import Column from './Column.tsx';
-import {EJustifyContent} from '../../types/TypeScriptInterfaces.ts';
 import Wrap from './Wrap.tsx';
 
 DropDown.propTypes = {
