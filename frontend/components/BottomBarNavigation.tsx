@@ -3,13 +3,16 @@ import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {APP_BUILD, Color, EAppBuild} from '../../Settings';
 import {logInfo} from '../../backend/utils/log-system/log-system';
 import BottomBarTab from './BottomBarTab';
-import { useApi } from '../contexts/apiContext';
+import {useApi} from '../contexts/apiContext';
 
 export default function BottomBarNavigation({navigation}: any) {
-  const api = useApi()
+  const api = useApi();
 
   const [activeTab, setActiveTab] = useState('Home');
-  const profileCardUuid = APP_BUILD !== EAppBuild.FRONTEND ? api.getUserApi() : '33c1f011-4eca-068c-9751-f68c788b2eee' // TODO
+  const profileCardUuid =
+    APP_BUILD !== EAppBuild.FRONTEND
+      ? api.getUserApi()
+      : '33c1f011-4eca-068c-9751-f68c788b2eee'; // TODO
 
   function handlePagePress(tab: string) {
     logInfo('BottomBarNavigation.tsx: Switching to ' + tab);
@@ -21,14 +24,14 @@ export default function BottomBarNavigation({navigation}: any) {
     <View style={styles.container}>
       <BottomBarTab
         handlePagePress={handlePagePress}
-        tabName='Home'
-        iconName='home'
+        tabName="Home"
+        iconName="home"
         isActive={activeTab === 'Home'}
       />
       <BottomBarTab
         handlePagePress={handlePagePress}
-        tabName='FavouritePage'
-        iconName='bag-personal'
+        tabName="FavouritePage"
+        iconName="bag-personal"
         isActive={activeTab === 'FavouritePage'}
       />
 
@@ -45,14 +48,14 @@ export default function BottomBarNavigation({navigation}: any) {
 
       <BottomBarTab
         handlePagePress={handlePagePress}
-        tabName='Store'
-        iconName='cart'
+        tabName="Store"
+        iconName="cart"
         isActive={activeTab === 'Store'}
       />
       <BottomBarTab
         handlePagePress={handlePagePress}
-        tabName='Other'
-        iconName='apps'
+        tabName="Other"
+        iconName="apps"
         isActive={activeTab === 'Other'}
       />
     </View>
