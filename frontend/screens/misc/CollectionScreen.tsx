@@ -6,15 +6,17 @@ import {weaponInfo} from '../../../statics/Mappings';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {tempPlayerLoadout} from '../../temp_data/tempCollection';
 import {useApi} from "../../contexts/apiContext";
+import {loadPlayerLoadout} from "../../interface.ts";
+import IPlayerLoadout from "../../../backend/api/types/pvp/player-loadout.ts";
 
 export default function CollectionScreen() {
-    const userApi = useApi().getUserApi()
+    const api = useApi()
+    const userApi = api.getUserApi()
     const user = userApi.getActiveUser()
 
     const [refreshLoadoutData, setRefreshLoadoutData] = useState(false)
-    const [playerLoadout, setPlayerLoadout] = useState(tempPlayerLoadout)
+    const [playerLoadout, setPlayerLoadout] = useState<IPlayerLoadout>()
     const [chosenWeaponID, setChosenWeaponID] = useState('');
-    const [showModal, setShowModal] = useState(false);
 
     const windowWidth = Dimensions.get('window').width;
     const cardWidth = (windowWidth - 24) / 2;
@@ -23,12 +25,8 @@ export default function CollectionScreen() {
         console.log('Presets Button pressed')
     }
 
-    function loadPlayerLoadout() {
-        // TODO
-    }
-
     useEffect(() => {
-        loadPlayerLoadout()
+        loadPlayerLoadout(api, setPlayerLoadout)
         setRefreshLoadoutData(false)
     }, [refreshLoadoutData]);
 
@@ -38,7 +36,7 @@ export default function CollectionScreen() {
                 <Text style={styles.presetsText}>Presets</Text>
             </TouchableOpacity>
             <FlatList
-                data={playerLoadout}
+                data={playerLoadout?.Guns}
                 numColumns={Math.floor(windowWidth / cardWidth)}
                 columnWrapperStyle={styles.collectionCardsContainer}
                 showsVerticalScrollIndicator={false}
@@ -46,23 +44,21 @@ export default function CollectionScreen() {
                     <TouchableOpacity
                         onPress={() => {
                             setChosenWeaponID(item.ID);
-                            setShowModal(true);
                         }}>
                         <CollectionCard weaponObject={item} />
                     </TouchableOpacity>
                 )}
             />
 
-            {showModal && chosenWeaponID !== '' && (
+            {chosenWeaponID !== '' && (
                 <View style={[styles.modalContainer, {width: windowWidth}]}>
                     <View style={styles.contentContainer}>
                         <Text style={styles.modalHeader}>
-                            Set Skin for {weaponInfo[chosenWeaponID as keyof typeof weaponInfo].name}
+                            Owned skins for {weaponInfo[chosenWeaponID as keyof typeof weaponInfo].name}
                         </Text>
                         <TouchableOpacity
                             style={styles.closeModalBtn}
                             onPress={() => {
-                                setShowModal(false);
                                 setChosenWeaponID('');
                             }}>
                             <MaterialCommunityIcons name={'close'} size={24} color={Color.textSecondary} />

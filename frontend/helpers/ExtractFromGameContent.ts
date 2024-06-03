@@ -1,5 +1,5 @@
 import ValorantApi from '../../backend/valorant-api/api';
-import {logInfo} from '../../backend/utils/log-system/log-system';
+import {logError, logInfo} from '../../backend/utils/log-system/log-system';
 import {ISpray} from '../../types/valorant-api.com/Sprays/Sprays';
 import {IPlayerCard} from '../../types/valorant-api.com/PlayerCards/PlayerCards';
 import {IBuddie} from '../../types/valorant-api.com/Buddies/Buddies';
@@ -117,4 +117,17 @@ export function getBundleByDataAssetID(dataAssetID: string, api: ValorantApi) {
         assetPath: '',
     };
     return emptyBundle;
+}
+
+export function getTitleByID(api: ValorantApi, titleID: string) {
+    if (!api.getGameContentApi().getGameContent().playerTitles || titleID === '') {
+        return ''
+    }
+
+    for (let title of api.getGameContentApi().getGameContent().playerTitles!) {
+        if(title.uuid === titleID) return title.titleText
+    }
+
+    logError('ExtractFromGameContent.ts: Did not find title with ID --> ' + titleID)
+    return ''
 }

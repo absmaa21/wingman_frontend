@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {APP_BUILD, Color, EAppBuild} from '../../Settings';
 import {logInfo} from '../../backend/utils/log-system/log-system';
@@ -9,16 +9,22 @@ export default function BottomBarNavigation({navigation}: any) {
     const api = useApi();
 
     const [activeTab, setActiveTab] = useState('Home');
-    const profileCardUuid =
-        APP_BUILD !== EAppBuild.FRONTEND
-            ? api.getUserApi().getActiveUser()?.cardID
-            : '33c1f011-4eca-068c-9751-f68c788b2eee';
+    const [profileCardUuid, setProfileCardUuid] = useState<string>(api.getUserApi().getActiveUser()?.cardID ?? '')
 
     function handlePagePress(tab: string) {
         logInfo('BottomBarNavigation.tsx: Switching to ' + tab);
         navigation.navigate(tab, tab);
         setActiveTab(tab);
     }
+
+    useEffect(() => {
+        if (profileCardUuid.length <= 0) {
+            const str = APP_BUILD !== EAppBuild.FRONTEND
+                ? api.getUserApi().getActiveUser()?.cardID ?? ''
+                : '33c1f011-4eca-068c-9751-f68c788b2eee';
+            setProfileCardUuid(str)
+        }
+    })
 
     return (
         <View style={styles.container}>

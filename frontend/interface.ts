@@ -30,6 +30,12 @@ import AccountXPEndpoint from '../backend/api/endpoints/pvp/account-xp.ts';
 import {tempAccountXP} from './temp_data/tempAccountXP.ts';
 import GameContentClient from '../backend/api/clients/game-content-client.ts';
 import IPlayerMMR from '../backend/api/types/pvp/player-mmr.ts';
+import {ICompetitiveUpdatesResponse} from "../types/valapidocs.techchrism.me/PVP_ENDPOINTS/CompetitiveUpdates.ts";
+import {tempCompetitiveUpdates} from "./temp_data/tempCompetitiveUpdates.ts";
+import CompetitiveUpdatesEndpoint from "../backend/api/endpoints/pvp/competitive-updates.ts";
+import {tempPlayerLoadout} from "./temp_data/tempCollection.ts";
+import IPlayerLoadout from "../backend/api/types/pvp/player-loadout.ts";
+import PlayerLoadoutEndpoint from "../backend/api/endpoints/pvp/player-loadout.ts";
 
 const gc = new GameContentClient();
 
@@ -122,9 +128,11 @@ export async function loadStorefront(
 }
 
 export async function loadPlayerMMR(
-    api: ValorantApi,
-    puuid: string,
-    setData: React.Dispatch<React.SetStateAction<IPlayerMMR | undefined>>,
+    {api, puuid, setData}: {
+        api: ValorantApi,
+        puuid?: string,
+        setData: React.Dispatch<React.SetStateAction<IPlayerMMR | undefined>>
+    }
 ) {
     logInfo('interface.ts: getting user store data ...');
     if (APP_BUILD === EAppBuild.FRONTEND) {
@@ -183,7 +191,7 @@ export async function loadFetchContent(
 
 export async function loadAccountXP(
     api: ValorantApi,
-    setData: React.Dispatch<React.SetStateAction<number | undefined>>,
+    setData: React.Dispatch<React.SetStateAction<number>>,
 ) {
     logInfo('interface.ts: getting account xp data ...');
     if (APP_BUILD === EAppBuild.FRONTEND) {
@@ -208,4 +216,62 @@ export async function loadAccountXP(
     }
     setData(r.unwrap().Progress.Level);
     logInfo('interface.ts: got accountXP data successfully');
+}
+
+export async function loadCompetitiveUpdates(
+    api: ValorantApi,
+    setData: React.Dispatch<React.SetStateAction<ICompetitiveUpdatesResponse | undefined>>
+) {
+    logInfo('interface.ts: getting competitive updates data ...');
+    if (APP_BUILD === EAppBuild.FRONTEND) {
+        logDebug(
+            'interface.ts: APP_BUILD is frontend --> set temp competitive updates data',
+        );
+        setData(tempCompetitiveUpdates);
+        return;
+    }
+
+    const client = new ValorantClient(gc);
+    const r = await new CompetitiveUpdatesEndpoint(
+        api.getUserApi().getActiveUser()!,
+    ).query(client);
+
+    if (r.isErr()) {
+        logError(
+            'interface.ts: something went wrong using CompetitiveUpdatesEndpoint --> ' +
+            r.getErr(),
+        );
+        return;
+    }
+    setData(r.unwrap());
+    logInfo('interface.ts: got competitive updates data successfully');
+}
+
+export async function loadPlayerLoadout(
+    api: ValorantApi,
+    setData: React.Dispatch<React.SetStateAction<IPlayerLoadout | undefined>>
+) {
+    logInfo('interface.ts: getting player loadout data ...');
+    if (APP_BUILD === EAppBuild.FRONTEND) {
+        logDebug(
+            'interface.ts: APP_BUILD is frontend --> set temp player loadout data',
+        );
+        setData(tempPlayerLoadout);
+        return;
+    }
+
+    const client = new ValorantClient(gc);
+    const r = await new PlayerLoadoutEndpoint(
+        api.getUserApi().getActiveUser()!,
+    ).query(client);
+
+    if (r.isErr()) {
+        logError(
+            'interface.ts: something went wrong using PlayerLoadoutEndpoint --> ' +
+            r.getErr(),
+        );
+        return;
+    }
+    setData(r.unwrap());
+    logInfo('interface.ts: got player loadout data successfully');
 }

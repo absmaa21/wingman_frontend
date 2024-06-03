@@ -2,30 +2,8 @@ interface IPlayerLoadout {
     /** Player UUID */
     Subject: string;
     Version: number;
-    Guns: {
-        /** UUID */
-        ID: string;
-        /** UUID */
-        CharmInstanceID?: string | undefined;
-        /** UUID */
-        CharmID?: string | undefined;
-        /** UUID */
-        CharmLevelID?: string | undefined;
-        /** UUID */
-        SkinID: string;
-        /** UUID */
-        SkinLevelID: string;
-        /** UUID */
-        ChromaID: string;
-        Attachments: unknown[];
-    }[];
-    Sprays: {
-        /** UUID */
-        EquipSlotID: string;
-        /** UUID */
-        SprayID: string;
-        SprayLevelID: null;
-    }[];
+    Guns: IPlayerLoadoutGun[];
+    Sprays: IPlayerLoadoutSpray[];
     Identity: {
         /** UUID */
         PlayerCardID: string;
@@ -37,6 +15,23 @@ interface IPlayerLoadout {
         HideAccountLevel: boolean;
     };
     Incognito: boolean;
+}
+
+export interface IPlayerLoadoutGun {
+    ID: string;
+    CharmInstanceID?: string | undefined;
+    CharmID?: string | undefined;
+    CharmLevelID?: string | undefined;
+    SkinID: string;
+    SkinLevelID: string;
+    ChromaID: string;
+    Attachments?: any[];
+}
+
+export interface IPlayerLoadoutSpray {
+    EquipSlotID: string;
+    SprayID: string;
+    SprayLevelID: null;
 }
 
 export default IPlayerLoadout;

@@ -10,6 +10,7 @@ import {IBuddie} from "../../types/valorant-api.com/Buddies/Buddies";
 import {IPlayerCard} from "../../types/valorant-api.com/PlayerCards/PlayerCards";
 import {ISpray} from "../../types/valorant-api.com/Sprays/Sprays";
 import {Image_KP, Image_VP} from "../../statics/Resources";
+import {logInfo} from "../../backend/utils/log-system/log-system.ts";
 
 AccessoryCard.propType = {
     offer: PropTypes.object.isRequired,
@@ -19,6 +20,11 @@ AccessoryCard.propType = {
 
 export default function AccessoryCard(props: any) {
     const offer: IStorefrontOffer = props.offer
+
+    if (!offer) {
+        return <></>
+    }
+
     const item: ISpray | IPlayerCard | IBuddie | undefined = getAccessoryByUuid(offer.Rewards[0].ItemID, useApi());
     const isPlayerCard =
         offer.Rewards[0].ItemTypeID != 'd5f120f8-ff8c-4aac-92ea-f2b5acbe9475' &&

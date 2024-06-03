@@ -2,8 +2,13 @@ import React from 'react';
 import {Dimensions, Image, StyleSheet, Text, View} from 'react-native';
 import {weaponInfo} from '../../statics/Mappings';
 import {Color} from '../../Settings';
+import {IPlayerLoadoutGun} from "../../backend/api/types/pvp/player-loadout.ts";
 
-export default function CollectionCard({weaponObject}: any) {
+interface ICollectionCard {
+    weaponObject: IPlayerLoadoutGun
+}
+
+export default function CollectionCard(props: ICollectionCard) {
     const windowWidth = Dimensions.get('window').width;
     const cardWidth = (windowWidth - 24) / 2;
 
@@ -11,15 +16,15 @@ export default function CollectionCard({weaponObject}: any) {
         <View style={[styles.container, {width: cardWidth}]}>
             <Image
                 source={{
-                    uri: `https://media.valorant-api.com/weaponskinchromas/${weaponObject.ChromaID}/fullrender.png`,
+                    uri: `https://media.valorant-api.com/weaponskinchromas/${props.weaponObject.ChromaID}/fullrender.png`,
                 }}
                 style={styles.weaponImage}
                 resizeMode={'contain'}
             />
-            <Text style={styles.weaponName}>{weaponInfo[weaponObject.ID as keyof typeof weaponInfo].name}</Text>
+            <Text style={styles.weaponName}>{weaponInfo[props.weaponObject.ID as keyof typeof weaponInfo].name}</Text>
             <Image
                 source={{
-                    uri: `https://media.valorant-api.com/buddylevels/${weaponObject.CharmLevelID}/displayicon.png`,
+                    uri: `https://media.valorant-api.com/buddylevels/${props.weaponObject.CharmLevelID}/displayicon.png`,
                 }}
                 style={styles.weaponCharmImage}
             />
