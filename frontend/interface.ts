@@ -21,12 +21,17 @@ import {
 import ValorantClient from '../backend/api/clients/valorant-client.ts';
 import StorefrontEndpoint from '../backend/api/endpoints/store/storefront.ts';
 import WalletEndpoint from '../backend/api/endpoints/store/wallet.ts';
-import {IPlayerMMRResponse} from '../types/valapidocs.techchrism.me/PVP_ENDPOINTS/PlayerMMR.ts';
 import PlayerMMREndpoint from '../backend/api/endpoints/pvp/player-mmr.ts';
 import {tempPlayerMMR} from './temp_data/tempProfile.ts';
 import {IFetchContentResponse} from '../types/valapidocs.techchrism.me/PVP_ENDPOINTS/FetchContent.ts';
 import FetchContentEndpoint from '../backend/api/endpoints/pvp/fetch-content.ts';
 import {tempContent} from './temp_data/tempContent.ts';
+import AccountXPEndpoint from '../backend/api/endpoints/pvp/account-xp.ts';
+import {tempAccountXP} from './temp_data/tempAccountXP.ts';
+import GameContentClient from '../backend/api/clients/game-content-client.ts';
+import IPlayerMMR from '../backend/api/types/pvp/player-mmr.ts';
+
+const gc = new GameContentClient();
 
 export async function loadUserWallet(
   api: ValorantApi,
@@ -49,7 +54,7 @@ export async function loadUserWallet(
     return;
   }
 
-  const client = new ValorantClient(api.getGameContentApi().getGameContent());
+  const client = new ValorantClient(gc);
   const user = api.getUserApi().getActiveUser();
   if (!user) {
     return;
@@ -93,9 +98,10 @@ export async function loadStorefront(
     setFeaturedItems(tempFeaturedItemsData);
     setAccessoryItems(tempAccessoryItemsData);
     setNightmarketItems(undefined);
+    return;
   }
 
-  const client = new ValorantClient(api.getGameContentApi().getGameContent());
+  const client = new ValorantClient(gc);
   const user = api.getUserApi().getActiveUser();
   if (!user) {
     return;
@@ -118,15 +124,16 @@ export async function loadStorefront(
 export async function loadPlayerMMR(
   api: ValorantApi,
   puuid: string,
-  setData: React.Dispatch<React.SetStateAction<IPlayerMMRResponse | undefined>>,
+  setData: React.Dispatch<React.SetStateAction<IPlayerMMR | undefined>>,
 ) {
   logInfo('interface.ts: getting user store data ...');
   if (APP_BUILD === EAppBuild.FRONTEND) {
     logDebug('interface.ts: APP_BUILD is frontend --> set temp playerMMR data');
     setData(tempPlayerMMR);
+    return;
   }
 
-  const client = new ValorantClient(api.getGameContentApi().getGameContent());
+  const client = new ValorantClient(gc);
   const user = api.getUserApi().getActiveUser();
   if (!user) {
     return;
@@ -155,9 +162,10 @@ export async function loadFetchContent(
       'interface.ts: APP_BUILD is frontend --> set temp fetch content data',
     );
     setData(tempContent);
+    return;
   }
 
-  const client = new ValorantClient(api.getGameContentApi().getGameContent());
+  const client = new ValorantClient(gc);
   const r = await new FetchContentEndpoint(
     api.getUserApi().getActiveUser()!,
   ).query(client);
@@ -171,4 +179,33 @@ export async function loadFetchContent(
   }
   setData(r.unwrap());
   logInfo('interface.ts: got FetchContent data successfully');
+}
+
+export async function loadAccountXP(
+  api: ValorantApi,
+  setData: React.Dispatch<React.SetStateAction<number | undefined>>,
+) {
+  logInfo('interface.ts: getting account xp data ...');
+  if (APP_BUILD === EAppBuild.FRONTEND) {
+    logDebug(
+      'interface.ts: APP_BUILD is frontend --> set temp account xp data',
+    );
+    setData(tempAccountXP.Progress.Level);
+    return;
+  }
+
+  const client = new ValorantClient(gc);
+  const r = await new AccountXPEndpoint(
+    api.getUserApi().getActiveUser()!,
+  ).query(client);
+
+  if (r.isErr()) {
+    logError(
+      'interface.ts: something went wrong using AccountXPEndpoint --> ' +
+        r.getErr(),
+    );
+    return;
+  }
+  setData(r.unwrap().Progress.Level);
+  logInfo('interface.ts: got accountXP data successfully');
 }

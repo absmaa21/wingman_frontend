@@ -207,6 +207,12 @@ export default function StoreScreen() {
     if (featuredItemsData) {
       return (
         <FlatList
+          refreshControl={
+            <RefreshControl
+              refreshing={reloadStoreData}
+              onRefresh={() => setReloadStoreData(true)}
+            />
+          }
           contentContainerStyle={styles.gap6}
           data={featuredItemsData}
           renderItem={renderWeaponSkinCard}
@@ -246,6 +252,12 @@ export default function StoreScreen() {
             renderFeaturedItems()
           ) : (
             <FlatList
+              refreshControl={
+                <RefreshControl
+                  refreshing={reloadStoreData}
+                  onRefresh={() => setReloadStoreData(true)}
+                />
+              }
               contentContainerStyle={styles.gap6}
               data={accessoryItemsData}
               renderItem={renderAccessoryCard}
@@ -353,14 +365,7 @@ export default function StoreScreen() {
   }, [api, reloadStoreData]);
 
   return (
-    <ScrollView
-      style={styles.container}
-      refreshControl={
-        <RefreshControl
-          refreshing={reloadStoreData}
-          onRefresh={() => setReloadStoreData(true)}
-        />
-      }>
+    <View style={styles.container}>
       {!showNightmarket && !showBundleContent && renderFeaturedStore()}
       {showNightmarket && nightmarketItemsData && renderNightmarketItems()}
       {showBundleContent && chosenBundleContent && renderBundleItems()}
@@ -379,7 +384,7 @@ export default function StoreScreen() {
           setShowAccessoryScreen={setShowAccessoryScreen}
         />
       )}
-    </ScrollView>
+    </View>
   );
 }
 

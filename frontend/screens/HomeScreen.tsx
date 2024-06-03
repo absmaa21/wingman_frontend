@@ -27,6 +27,7 @@ import {
 } from '../../types/valapidocs.techchrism.me/PVP_ENDPOINTS/CurrentGame.ts';
 import {EJustifyContent} from '../../types/TypeScriptInterfaces.ts';
 import ProfileScreen from './ProfileScreen.tsx';
+import {loadAccountXP} from '../interface.ts';
 
 export default function HomeScreen() {
   const api = useApi();
@@ -47,8 +48,8 @@ export default function HomeScreen() {
   >(tempCurrentGame_Competitive);
   const playerName = user?.accountInfo.acct.game_name ?? 'orcan';
   const playerTag = user?.accountInfo.acct.tag_line ?? '420';
-  const [playerLevel, setPlayerLevel] = useState(
-    user?.accountXp?.Progress.Level ?? 0,
+  const [playerLevel, setPlayerLevel] = useState<number | undefined>(
+    user?.accountXp?.Progress.Level ?? -1,
   );
   let dailiesFinished: number = 9;
   const competitiveTier: number = 21;
@@ -58,22 +59,12 @@ export default function HomeScreen() {
   const playerHS: number = 34;
   const playerWR: number = 56;
 
-  function loadUserData() {
-    logInfo('HomeScreen.tsx: getting userAccountXp ...');
-    userApi.getUserAccountXP(user!).then(r => {
-      setPlayerLevel(r.value?.Progress.Level!);
-    });
-  }
-
-  function loadLiveData() {}
-
   // refresh data
   useEffect(() => {
     logInfo('HomeScreen.tsx: Refreshing data ...');
-    loadUserData();
-    loadLiveData();
+    loadAccountXP(api, setPlayerLevel);
     setReloadData(false);
-  }, [reloadData, playerLevel]);
+  }, [reloadData, playerLevel, api]);
 
   const gameState: string = 'PreGame';
   const gameHeader: string = 'Liveboard';
@@ -104,7 +95,7 @@ export default function HomeScreen() {
                 <PlayerName name={playerName} tag={playerTag} />
                 <PlayerDailyCheckpoints dailiesFinished={dailiesFinished} />
               </Column>
-              <PlayerLevel level={playerLevel} />
+              <PlayerLevel level={playerLevel ?? -1} />
             </Container>
             <Container height={62}>
               <InfoBox title={'KD'} detail={playerKD.toFixed(2)} />

@@ -64,12 +64,6 @@ async function fetchData(
   client: ValorantClient,
   navigation: any,
 ) {
-  if (APP_BUILD === EAppBuild.FRONTEND) {
-    logDebug('SplashScreen.tsx: APP_BUILD is frontend --> skip login');
-    navigation.navigate('Main');
-    return;
-  }
-
   logDebug('SplashScreen.tsx: clearing all cookies');
   await CookieManager.clearAll();
 
@@ -79,8 +73,11 @@ async function fetchData(
     logError('SplashScreen.tsx: Api Error');
   }
 
-  logInfo('SplashScreen.tsx: initialize valorant client');
-  client.init(api.getGameContentApi().getGameContent());
+  if (APP_BUILD === EAppBuild.FRONTEND) {
+    logDebug('SplashScreen.tsx: APP_BUILD is frontend --> skip login');
+    navigation.navigate('Main');
+    return;
+  }
 
   logInfo('SplashScreen.tsx: getting active user');
   const activeUser = api.getUserApi().getActiveUser();

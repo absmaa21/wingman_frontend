@@ -40,7 +40,7 @@ class PreGamePlayerEndpoint extends CachedEndpoint<IPreGamePlayer, EnumError<Val
     }
 
     public refreshTimeoutDuration(_data: IPreGamePlayer): number {
-        return 1000 * 10;
+        return 1000 * 5;
     }
 }
 

@@ -11,7 +11,7 @@ export default function BottomBarNavigation({navigation}: any) {
   const [activeTab, setActiveTab] = useState('Home');
   const profileCardUuid =
     APP_BUILD !== EAppBuild.FRONTEND
-      ? api.getUserApi()
+      ? api.getUserApi().getActiveUser()
       : '33c1f011-4eca-068c-9751-f68c788b2eee'; // TODO
 
   function handlePagePress(tab: string) {

@@ -20,6 +20,8 @@ import ValorantApi from './backend/valorant-api/api';
 import ValorantClient from './backend/api/clients/valorant-client';
 import Toast from 'react-native-toast-message';
 import Banner from './frontend/components/Banner.tsx';
+import GameContentClient from './backend/api/clients/game-content-client.ts';
+import {GameContentClientProvider} from './frontend/contexts/gameContentClientContext.tsx';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -63,33 +65,39 @@ export default function App(): React.JSX.Element {
   StatusBar.setBackgroundColor(Color.backgroundPrimary);
   changeNavigationBarColor(Color.backgroundPrimary);
 
+  const valorantApi = new ValorantApi();
+  const gameContentClient = new GameContentClient();
+  const valorantClient = new ValorantClient(gameContentClient);
+
   return (
-    <ApiProvider api={new ValorantApi()}>
-      <ValorantClientProvider client={new ValorantClient()}>
-        <NavigationContainer>
-          <Stack.Navigator>
-            <Stack.Screen
-              name="Splash"
-              component={SplashScreen}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="Login"
-              component={RsoScreen}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="Main"
-              component={Main}
-              options={{headerShown: false}}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
-        <Toast />
-        {APP_BUILD === EAppBuild.FRONTEND && (
-          <Banner text={'NO DATA'} color={'#d00'} />
-        )}
-      </ValorantClientProvider>
+    <ApiProvider api={valorantApi}>
+      <GameContentClientProvider client={gameContentClient}>
+        <ValorantClientProvider client={valorantClient}>
+          <NavigationContainer>
+            <Stack.Navigator>
+              <Stack.Screen
+                name="Splash"
+                component={SplashScreen}
+                options={{headerShown: false}}
+              />
+              <Stack.Screen
+                name="Login"
+                component={RsoScreen}
+                options={{headerShown: false}}
+              />
+              <Stack.Screen
+                name="Main"
+                component={Main}
+                options={{headerShown: false}}
+              />
+            </Stack.Navigator>
+          </NavigationContainer>
+          <Toast />
+          {APP_BUILD === EAppBuild.FRONTEND && (
+            <Banner text={'NO DATA'} color={'#d00'} />
+          )}
+        </ValorantClientProvider>
+      </GameContentClientProvider>
     </ApiProvider>
   );
 }

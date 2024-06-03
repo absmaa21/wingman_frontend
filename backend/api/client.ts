@@ -3,6 +3,7 @@ import EnumError from './error';
 import {Request, Response} from './http/http';
 
 export enum ClientError {
+    NOT_IMPLEMENTED,
     INVALID_HOST,
     QUERY_FAILED,
     CACHE_ERROR,
@@ -19,8 +20,8 @@ export abstract class ClientHost {
      * This will be overridden by the client implementation.
      * @returns A Result containing the host URL, or an error if the host URL is invalid.
      */
-    host(): Result<URL | null, EnumError<ClientError>> {
-        return Result.ok<URL | null, EnumError<ClientError>>(null);
+    host(): Result<URL | undefined, EnumError<ClientError>> {
+        return Result.ok<URL | undefined, EnumError<ClientError>>();
     }
 }
 

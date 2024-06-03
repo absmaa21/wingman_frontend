@@ -44,7 +44,7 @@ class CurrentGamePlayerEndpoint extends CachedEndpoint<
     }
 
     public refreshTimeoutDuration(_data: ICurrentGamePlayer): number {
-        return 1000 * 10;
+        return 1000 * 5;
     }
 }
 

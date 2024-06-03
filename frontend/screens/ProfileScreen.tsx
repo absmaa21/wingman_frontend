@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {FlatList, RefreshControl, ScrollView, StyleSheet} from 'react-native';
+import {RefreshControl, ScrollView, StyleSheet, View} from 'react-native';
 import {APP_BUILD, Color, EAppBuild} from '../../Settings';
 import MatchHistoryCard from '../components/MatchHistoryCard';
 import MatchHistoryScreen from '../components/MatchHistoryScreen';
@@ -23,10 +23,11 @@ import ProfileStat from '../components/ProfileStat.tsx';
 import tempMatchDetails from '../temp_data/tempMatchHistory';
 import DropDown from '../components/DropDown.tsx';
 import {EJustifyContent} from '../../types/TypeScriptInterfaces.ts';
-import {IPlayerMMRResponse} from '../../types/valapidocs.techchrism.me/PVP_ENDPOINTS/PlayerMMR.ts';
 import {loadFetchContent, loadPlayerMMR} from '../interface.ts';
-import {getPeakRank, getSeasons, IPeakRank} from '../helpers/ProfileHelpers.ts';
+import {getPeakRank, IPeakRank} from '../helpers/ProfileHelpers.ts';
 import {IFetchContentResponse} from '../../types/valapidocs.techchrism.me/PVP_ENDPOINTS/FetchContent.ts';
+import {useGameContentClient} from '../contexts/gameContentClientContext.tsx';
+import IPlayerMMR from '../../backend/api/types/pvp/player-mmr.ts';
 
 ProfileScreen.propType = {
   puuid: PropTypes.string,
@@ -36,16 +37,15 @@ export default function ProfileScreen(
   props: PropTypes.InferProps<typeof ProfileScreen.propType>,
 ) {
   const api = useApi();
-  const client = new ValorantClient(api.getGameContentApi().getGameContent());
+  const gameContentClient = useGameContentClient();
+  const client = new ValorantClient(gameContentClient);
   const puuid =
     props.puuid ?? api.getUserApi().getActiveUser()?.accountInfo.sub;
   let index: number = 0;
 
   const [fetchedMatchHistory, setFetchedMatchHistory] = useState<IMatch[]>([]);
   const [matchDetails, setMatchDetails] = useState<IMatchDetailsResponse[]>([]);
-  const [profileData, setProfileData] = useState<
-    IPlayerMMRResponse | undefined
-  >();
+  const [profileData, setProfileData] = useState<IPlayerMMR | undefined>();
   const [fetchContent, setFetchContent] = useState<IFetchContentResponse>();
   const [peakRank, setPeakRank] = useState<IPeakRank>();
   const [lastFetchTime, setLastFetchTime] = useState<number | undefined>(
@@ -121,7 +121,7 @@ export default function ProfileScreen(
       setLastFetchTime(Date.now());
     }
     setReloadRequested(false);
-  }, [reloadRequested]);
+  }, [api, lastFetchTime, puuid, reloadRequested]);
 
   useEffect(() => {
     getPeakRank(
@@ -255,19 +255,17 @@ export default function ProfileScreen(
         />
       </Row>
 
-      <FlatList
-        contentContainerStyle={styles.flatList}
-        data={matchDetails}
-        renderItem={item => {
+      <View style={styles.flatList}>
+        {matchDetails.map(item => {
           return (
             <MatchHistoryCard
-              matchDetails={item.item}
+              matchDetails={item}
               puuid={puuid ?? '92fc5f4b-de99-596c-9122-875625c115b4'}
               setChosenMatch={setChosenMatch}
             />
           );
-        }}
-      />
+        })}
+      </View>
 
       {chosenMatch && (
         <MatchHistoryScreen

@@ -17,7 +17,7 @@ export enum EStatsPeriod {
 }
 
 export const APP_VERSION: string = '0.5.0';
-export const APP_BUILD: EAppBuild = EAppBuild.PUBLIC;
+export const APP_BUILD: EAppBuild = EAppBuild.FRONTEND;
 
 export const Color = {
   backgroundPrimary: '#121212',
