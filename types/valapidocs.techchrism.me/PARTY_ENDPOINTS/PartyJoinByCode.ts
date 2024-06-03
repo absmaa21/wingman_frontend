@@ -7,7 +7,7 @@ export type PartyJoinByCodeResponse = {
     Invites: null;
     Requests: PartyJoinByCodeResponseRequest[];
     PlatformInfo: PartyJoinByCodeResponsePlatformInfo;
-};
+}
 
 export type PartyJoinByCodeResponseRequest = {
     ID: string;
@@ -21,7 +21,7 @@ export type PartyJoinByCodeResponseRequest = {
     /** Date in ISO 8601 format */
     RefreshedAt: string;
     ExpiresIn: number;
-};
+}
 
 export type PartyJoinByCodeResponsePlatformInfo = {
     platformType: "PC";

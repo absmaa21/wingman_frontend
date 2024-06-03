@@ -1,4 +1,4 @@
-import { EQueueAccessibility, IPartyCustomGameData, IPartyErrorNotification, IPartyMatchmakingData, IPartyMember } from "./ChangeQueue";
+import {IPartyCustomGameData, IPartyErrorNotification, IPartyMatchmakingData, IPartyMember} from "./Party.ts";
 
 export interface IEnterMatchmakingQueueResponse {
     ID: string;
@@ -10,7 +10,7 @@ export interface IEnterMatchmakingQueueResponse {
     State: string;
     PreviousState: string;
     StateTransitionReason: string;
-    Accessibility: EQueueAccessibility;
+    Accessibility: string;
     CustomGameData: IPartyCustomGameData;
     MatchmakingData: IPartyMatchmakingData;
     Invites: null;
@@ -28,4 +28,4 @@ export interface IEnterMatchmakingQueueResponse {
     XPBonuses: unknown[];
     /** Empty string when there is no invite code */
     InviteCode: string;
-};
+}

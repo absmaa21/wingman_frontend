@@ -5,8 +5,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import {currencyUuid} from '../../statics/Mappings';
 import {getAccessoryByUuid} from "../helpers/ExtractFromGameContent";
 import PropTypes from "prop-types";
-import {PlayerCard} from "../../types/valorant-api.com/PlayerCards/PlayerCards";
-import {StorefrontOffer} from "../../types/valapidocs.techchrism.me/STORE_ENDPOINTS/Storefront";
+import {IPlayerCard} from "../../types/valorant-api.com/PlayerCards/PlayerCards";
+import {IStorefrontOffer} from "../../types/valapidocs.techchrism.me/STORE_ENDPOINTS/Storefront";
 import {useApi} from "../contexts/apiContext";
 import {Image_KP, Image_VP} from "../../statics/Resources";
 
@@ -16,9 +16,8 @@ AccessoryScreen.propType = {
 }
 
 export default function AccessoryScreen(props: any) {
-    const offer: StorefrontOffer = props.offer
-    // @ts-ignore
-    const item: PlayerCard = getAccessoryByUuid(offer.Rewards[0].ItemID, useApi());
+    const offer: IStorefrontOffer = props.offer
+    const item: IPlayerCard = getAccessoryByUuid(offer.Rewards[0].ItemID, useApi()) as IPlayerCard;
 
     return (
         <View style={styles.container}>
@@ -26,7 +25,7 @@ export default function AccessoryScreen(props: any) {
                 <View style={styles.header}>
                     <Text style={styles.itemName}>{item?.displayName}</Text>
                     <TouchableOpacity onPress={() => props.setShowAccessoryScreen(false)}>
-                        <MaterialCommunityIcons name={'close'} color={Color.textSecondary} size={40} />
+                        <MaterialCommunityIcons name={'close'} color={Color.textSecondary} size={40}/>
                     </TouchableOpacity>
                 </View>
 
@@ -51,7 +50,8 @@ export default function AccessoryScreen(props: any) {
                 </View>
 
                 <View style={styles.priceContainer}>
-                    <Text style={styles.priceText}>{offer.Cost[currencyUuid.KP] ? offer.Cost[currencyUuid.KP] : offer.Cost[currencyUuid.VP]}</Text>
+                    <Text
+                        style={styles.priceText}>{offer.Cost[currencyUuid.KP] ? offer.Cost[currencyUuid.KP] : offer.Cost[currencyUuid.VP]}</Text>
                     <Image
                         style={styles.priceImage}
                         resizeMode={'contain'}

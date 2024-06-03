@@ -4,9 +4,8 @@ import {contentTier, currencyUuid} from '../../statics/Mappings'
 import {Color} from '../../Settings'
 import {Image_VP} from "../../statics/Resources";
 import PropTypes from "prop-types";
-import {StorefrontOffer} from "../../types/valapidocs.techchrism.me/STORE_ENDPOINTS/Storefront";
-import {Skin} from "../../types/valorant-api.com/Weapons/Weapons";
-import {logInfo} from "../../backend/utils/log-system/log-system";
+import {IStorefrontOffer} from "../../types/valapidocs.techchrism.me/STORE_ENDPOINTS/Storefront";
+import {IWeaponSkin} from "../../types/valorant-api.com/Weapons/WeaponSkins.ts";
 
 WeaponSkinCard.propTypes = {
     offer: PropTypes.object.isRequired,
@@ -17,14 +16,14 @@ WeaponSkinCard.propTypes = {
 
 
 export default function WeaponSkinCard(props: any) {
-    const offer: StorefrontOffer = props.offer;
-    const skin: Skin = props.skinObject;
+    const offer: IStorefrontOffer = props.offer;
+    const skin: IWeaponSkin = props.skinObject;
     const contentTierUuid: string | null = skin.contentTierUuid;
     const contentTierHex: string | undefined = contentTier[contentTierUuid!];
     const price = offer.Cost[currencyUuid.VP];
     const skinImage = skin.displayIcon ? skin.displayIcon : skin.chromas[0].displayIcon!;
 
-    if(!offer || !skin) {
+    if (!offer || !skin) {
         return (<Text>Skin not found.</Text>)
     }
 

@@ -7,7 +7,7 @@ interface ApiContextProps {
 
 const ApiContext = createContext<ApiContextProps | undefined>(undefined);
 
-export const ApiProvider: React.FC<{api: ValorantApi; children: ReactNode}> = ({api, children}) => {
+export const ApiProvider: React.FC<{ api: ValorantApi; children: ReactNode }> = ({api, children}) => {
     return <ApiContext.Provider value={{api}}>{children}</ApiContext.Provider>;
 };
 

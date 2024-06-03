@@ -6,6 +6,9 @@ export interface IUser {
     wallet?: IWallet;
     store?: IStore;
     ownedItems?: IOwnedItems;
+
+    cardID: string;
+    titleID: string;
 }
 
 export interface IAuthData {

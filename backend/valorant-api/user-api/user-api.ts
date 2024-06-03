@@ -9,11 +9,12 @@ import {Shard} from '../requests/request-types';
 import {store_fetchEntitlements, store_fetchFrontV2, store_fetchOffers, store_fetchWallet} from '../requests/api/store';
 import {cookieReAuth} from '../requests/api/authentication';
 import {exists, readFile, writeFile} from '../../utils/file-system/file-system';
-import {logDebug, logInfo} from '../../utils/log-system/log-system';
-import {Cookies} from '@react-native-cookies/cookies';
 import ValorantClient from '../../api/clients/valorant-client';
 import {IGameContent} from '../game-content-api/game-content-types';
 import EntitlementEndpoint from '../../api/endpoints/authentication/entitlement';
+import GameContentClient from "../../api/clients/game-content-client.ts";
+import PlayerLoadoutEndpoint from "../../api/endpoints/pvp/player-loadout.ts";
+import {logError} from "../../utils/log-system/log-system.ts";
 
 export default class UserApi {
     private apiState: ValorantApiState;
@@ -183,7 +184,7 @@ export default class UserApi {
             | 'skins'
             | 'skinVariants'
             | 'titles';
-        const itemTypeIds: {id: string; name: ItemTypeName}[] = [
+        const itemTypeIds: { id: string; name: ItemTypeName }[] = [
             {id: '01bb38e1-da47-4e6a-9b3d-945fe4655707', name: 'agents'},
             {id: 'f85cb6f7-33e5-4dc8-b609-ec7212301948', name: 'contracts'},
             {id: 'd5f120f8-ff8c-4aac-92ea-f2b5acbe9475', name: 'sprays'},
@@ -336,9 +337,10 @@ export default class UserApi {
             ...idTokenInfo,
         };
 
+        const client = new ValorantClient(new GameContentClient());
+
         let entitlementsToken: string;
         if (this.gameContent) {
-            const client = new ValorantClient(this.gameContent);
             const entitlementsResult = await new EntitlementEndpoint(accessToken).query(client);
             if (entitlementsResult.isErr()) {
                 return createApiResult(
@@ -360,7 +362,17 @@ export default class UserApi {
                 ssid: authData.ssid,
                 expiresAt: authData.expiresAt,
             },
+            cardID: '',
+            titleID: ''
         };
+
+        const loadoutResult = await new PlayerLoadoutEndpoint(user).query(client);
+        if (loadoutResult.isErr()) {
+            logError("user-api.ts: Error fetching player loadout!")
+        } else {
+            user.cardID = loadoutResult.unwrap().Identity.PlayerCardID
+            user.titleID = loadoutResult.unwrap().Identity.PlayerTitleID
+        }
 
         return createApiResult(user, ApiResultType.SUCCESS);
     }

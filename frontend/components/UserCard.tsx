@@ -17,13 +17,13 @@ function UserCard({user, isActiveUser}: any) {
         const playerName = user.accountInfo.acct.game_name
         const playerTag = user.accountInfo.acct.tag_line
         Alert.alert('Delete confirmation', 'Are you sure you want to remove the user: ' + playerName + "#" + playerTag, [
-                {text: 'OK', onPress: () => logInfo("UserCard.tsx: User deletion confirmed")},
-                {text: 'CANCEL', onPress: () => logInfo("UserCard.tsx: User deletion canceled")},
+            {text: 'OK', onPress: () => logInfo("UserCard.tsx: User deletion confirmed")},
+            {text: 'CANCEL', onPress: () => logInfo("UserCard.tsx: User deletion canceled")},
         ])
     }
 
     function handleLogout() {
-        if(user) return
+        if (user) return
         // TODO
         RNRestart.restart()
     }

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, StyleSheet, Text, Touchable, TouchableOpacity, View} from 'react-native';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Color, Settings} from '../../Settings';
 import {useEffect, useRef, useState} from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -23,7 +23,7 @@ export default function WeaponSkinScreen(props: any) {
     const videoMapping: any = {};
     const imageMapping: any = {};
 
-    skin.chromas.forEach((chroma: {[x: string]: any}) => {
+    skin.chromas.forEach((chroma: { [x: string]: any }) => {
         videoMapping[chroma.uuid] = chroma.streamedVideo;
         if (chroma.streamedVideo !== null) {
             videoMapping.fallback = chroma.streamedVideo;
@@ -34,7 +34,7 @@ export default function WeaponSkinScreen(props: any) {
             imageMapping.fallback = chroma.fullRender;
         }
     });
-    skin.levels.forEach((level: {[x: string]: any}) => {
+    skin.levels.forEach((level: { [x: string]: any }) => {
         videoMapping[level.uuid] = level.streamedVideo;
         if (level.streamedVideo !== null) {
             videoMapping.fallback = level.streamedVideo;
@@ -98,7 +98,7 @@ export default function WeaponSkinScreen(props: any) {
                 </View>
                 <View style={styles.boxRight}>
                     <Text style={styles.priceText}>10</Text>
-                    <Image style={styles.priceImage} source={require('../../assets/currencies/currencyR.png')} />
+                    <Image style={styles.priceImage} source={require('../../assets/currencies/currencyR.png')}/>
                 </View>
             </TouchableOpacity>
         );
@@ -128,7 +128,7 @@ export default function WeaponSkinScreen(props: any) {
                         style={styles.contentTierImage}
                     />
                     <TouchableOpacity onPress={() => props.setShowWeaponScreen(false)}>
-                        <MaterialCommunityIcons name={'close'} color={Color.textFifth} size={40} />
+                        <MaterialCommunityIcons name={'close'} color={Color.textFifth} size={40}/>
                     </TouchableOpacity>
                 </View>
 
@@ -178,7 +178,7 @@ export default function WeaponSkinScreen(props: any) {
                 <View style={styles.footer}>
                     <View style={styles.footerBox}>
                         <Text style={styles.currencyText}>{upgradePrice}</Text>
-                        <Image style={styles.currencyImage} source={require('../../assets/currencies/currencyR.png')} />
+                        <Image style={styles.currencyImage} source={require('../../assets/currencies/currencyR.png')}/>
                     </View>
                     <View style={styles.footerBox}>
                         <Text style={styles.currencyText}>{offer.Cost[currencyUuid.VP]}</Text>

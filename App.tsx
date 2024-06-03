@@ -27,77 +27,77 @@ const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function Main() {
-  return (
-    <Tab.Navigator tabBar={props => <BottomBarNavigation {...props} />}>
-      <Tab.Screen
-        name={'Home'}
-        component={HomeScreen}
-        options={{headerShown: false}}
-      />
-      <Tab.Screen
-        name={'FavouritePage'}
-        component={CollectionScreen}
-        options={{headerShown: false}}
-      />
-      <Tab.Screen
-        name={'Profile'}
-        component={ProfileScreen}
-        options={{headerShown: false}}
-      />
-      <Tab.Screen
-        name={'Store'}
-        component={StoreScreen}
-        options={{headerShown: false}}
-      />
-      <Tab.Screen
-        name={'Other'}
-        component={OthersScreen}
-        options={{headerShown: false}}
-      />
-    </Tab.Navigator>
-  );
+    return (
+        <Tab.Navigator tabBar={props => <BottomBarNavigation {...props} />}>
+            <Tab.Screen
+                name={'Home'}
+                component={HomeScreen}
+                options={{headerShown: false}}
+            />
+            <Tab.Screen
+                name={'FavouritePage'}
+                component={CollectionScreen}
+                options={{headerShown: false}}
+            />
+            <Tab.Screen
+                name={'Profile'}
+                component={ProfileScreen}
+                options={{headerShown: false}}
+            />
+            <Tab.Screen
+                name={'Store'}
+                component={StoreScreen}
+                options={{headerShown: false}}
+            />
+            <Tab.Screen
+                name={'Other'}
+                component={OthersScreen}
+                options={{headerShown: false}}
+            />
+        </Tab.Navigator>
+    );
 }
 
 export default function App(): React.JSX.Element {
-  initLogSystem(false, APP_BUILD === EAppBuild.PUBLIC).then(() =>
-    logInfo('App.tsx: Log System started'),
-  );
-  StatusBar.setBackgroundColor(Color.backgroundPrimary);
-  changeNavigationBarColor(Color.backgroundPrimary);
+    initLogSystem(false, APP_BUILD === EAppBuild.PUBLIC).then(() =>
+        logInfo('App.tsx: Log System started'),
+    );
+    StatusBar.setBackgroundColor(Color.backgroundPrimary);
+    changeNavigationBarColor(Color.backgroundPrimary);
 
-  const valorantApi = new ValorantApi();
-  const gameContentClient = new GameContentClient();
-  const valorantClient = new ValorantClient(gameContentClient);
+    const valorantApi = new ValorantApi();
+    const gameContentClient = new GameContentClient();
+    const valorantClient = new ValorantClient(gameContentClient);
 
-  return (
-    <ApiProvider api={valorantApi}>
-      <GameContentClientProvider client={gameContentClient}>
-        <ValorantClientProvider client={valorantClient}>
-          <NavigationContainer>
-            <Stack.Navigator>
-              <Stack.Screen
-                name="Splash"
-                component={SplashScreen}
-                options={{headerShown: false}}
-              />
-              <Stack.Screen
-                name="Login"
-                component={RsoScreen}
-                options={{headerShown: false}}
-              />
-              <Stack.Screen
-                name="Main"
-                component={Main}
-                options={{headerShown: false}}
-              />
-            </Stack.Navigator>
-          </NavigationContainer>
-          <Toast />
-          {APP_BUILD === EAppBuild.FRONTEND && (
-            <Banner text={'NO DATA'} color={'#d00'} />
-          )}
-        </ValorantClientProvider>
-      </GameContentClientProvider>
-    </ApiProvider>
-  );
+    return (
+        <ApiProvider api={valorantApi}>
+            <GameContentClientProvider client={gameContentClient}>
+                <ValorantClientProvider client={valorantClient}>
+                    <NavigationContainer>
+                        <Stack.Navigator>
+                            <Stack.Screen
+                                name="Splash"
+                                component={SplashScreen}
+                                options={{headerShown: false}}
+                            />
+                            <Stack.Screen
+                                name="Login"
+                                component={RsoScreen}
+                                options={{headerShown: false}}
+                            />
+                            <Stack.Screen
+                                name="Main"
+                                component={Main}
+                                options={{headerShown: false}}
+                            />
+                        </Stack.Navigator>
+                    </NavigationContainer>
+                    <Toast/>
+                    {APP_BUILD === EAppBuild.FRONTEND && (
+                        <Banner text={'NO DATA'} color={'#d00'}/>
+                    )}
+                </ValorantClientProvider>
+            </GameContentClientProvider>
+        </ApiProvider>
+    );
 }

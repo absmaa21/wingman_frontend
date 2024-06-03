@@ -10,14 +10,14 @@ export type PartyPlayerRequest = {
     /** Date in ISO 8601 format */
     RefreshedAt: string;
     ExpiresIn: number;
-};
+}
 
 export type PartyPlayerPlatformInfo = {
     platformType: "PC";
     platformOS: "Windows";
     platformOSVersion: string;
     platformChipset: "Unknown";
-};
+}
 
 export type PartyPlayerResponse = {
     /** Player UUID */
@@ -28,4 +28,4 @@ export type PartyPlayerResponse = {
     Invites: null;
     Requests: PartyPlayerRequest[];
     PlatformInfo: PartyPlayerPlatformInfo;
-};
+}

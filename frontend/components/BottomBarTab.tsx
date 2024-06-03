@@ -11,25 +11,25 @@ BottomBarTab.propTypes = {
 }
 
 export default function BottomBarTab(props: any) {
-  return (
-    <TouchableOpacity
-      style={styles.button}
-      onPress={() => props.handlePagePress(props.tabName)}
-    >
-      <MaterialCommunityIcons
-        name={props.iconName}
-        size={36}
-        color={props.isActive ? Color.accent : Color.textPrimary}
-      />
-    </TouchableOpacity>
-  );
+    return (
+        <TouchableOpacity
+            style={styles.button}
+            onPress={() => props.handlePagePress(props.tabName)}
+        >
+            <MaterialCommunityIcons
+                name={props.iconName}
+                size={36}
+                color={props.isActive ? Color.accent : Color.textPrimary}
+            />
+        </TouchableOpacity>
+    );
 }
 
 const styles = StyleSheet.create({
-  button: {
-    width: 56,
-    height: 56,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+    button: {
+        width: 56,
+        height: 56,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
 });

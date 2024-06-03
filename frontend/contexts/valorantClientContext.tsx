@@ -7,7 +7,10 @@ interface ValorantClientContextProps {
 
 const ValorantClientContext = createContext<ValorantClientContextProps | undefined>(undefined);
 
-export const ValorantClientProvider: React.FC<{client: ValorantClient; children: ReactNode}> = ({client, children}) => {
+export const ValorantClientProvider: React.FC<{ client: ValorantClient; children: ReactNode }> = ({
+                                                                                                      client,
+                                                                                                      children
+                                                                                                  }) => {
     return <ValorantClientContext.Provider value={{client}}>{children}</ValorantClientContext.Provider>;
 };
 

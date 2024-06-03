@@ -120,6 +120,10 @@ const weaponInfo: IWeaponInfo = {
         name: 'Marshal',
         type: 'Sniper',
     },
+    '5f0aaf7a-4289-3998-d5ff-eb9a5cf7ef5c': {
+        name: 'Outlaw',
+        type: 'Sniper',
+    },
     '462080d1-4035-2937-7c09-27aa2a5c27a7': {
         name: 'Spectre',
         type: 'SMG',

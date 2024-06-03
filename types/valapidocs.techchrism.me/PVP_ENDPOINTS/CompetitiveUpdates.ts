@@ -12,11 +12,11 @@ export interface ICompetitiveMatchUpdate {
     RankedRatingPerformanceBonus: number;
     CompetitiveMovement: "MOVEMENT_UNKNOWN";
     AFKPenalty: number;
-};
+}
 
 export interface ICompetitiveUpdatesResponse {
     Version: number;
     /** Player UUID */
     Subject: string;
     Matches: ICompetitiveMatchUpdate[];
-};
+}

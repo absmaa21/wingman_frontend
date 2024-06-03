@@ -145,10 +145,10 @@ export interface ICollapsed {
     "voice.clutchmute.prompt.enabled": string;
     "voice.provider": string;
     "whisper.enabled": string;
-};
+}
 
 export interface IConfigResponse {
     /** Date in ISO 8601 format with sub-second precision */
     LastApplication: string;
     Collapsed: ICollapsed;
-};
+}

@@ -4,11 +4,11 @@ import {Color} from '../../Settings';
 import {currencyUuid} from '../../statics/Mappings';
 import PropTypes from "prop-types";
 import {getAccessoryByUuid} from "../helpers/ExtractFromGameContent";
-import {StorefrontOffer} from "../../types/valapidocs.techchrism.me/STORE_ENDPOINTS/Storefront";
+import {IStorefrontOffer} from "../../types/valapidocs.techchrism.me/STORE_ENDPOINTS/Storefront";
 import {useApi} from "../contexts/apiContext";
-import {Buddie} from "../../types/valorant-api.com/Buddies/Buddies";
-import {PlayerCard} from "../../types/valorant-api.com/PlayerCards/PlayerCards";
-import {Spray} from "../../types/valorant-api.com/Sprays/Sprays";
+import {IBuddie} from "../../types/valorant-api.com/Buddies/Buddies";
+import {IPlayerCard} from "../../types/valorant-api.com/PlayerCards/PlayerCards";
+import {ISpray} from "../../types/valorant-api.com/Sprays/Sprays";
 import {Image_KP, Image_VP} from "../../statics/Resources";
 
 AccessoryCard.propType = {
@@ -18,13 +18,13 @@ AccessoryCard.propType = {
 }
 
 export default function AccessoryCard(props: any) {
-    const offer: StorefrontOffer = props.offer
-    const item: Spray | PlayerCard | Buddie | undefined = getAccessoryByUuid(offer.Rewards[0].ItemID, useApi());
+    const offer: IStorefrontOffer = props.offer
+    const item: ISpray | IPlayerCard | IBuddie | undefined = getAccessoryByUuid(offer.Rewards[0].ItemID, useApi());
     const isPlayerCard =
         offer.Rewards[0].ItemTypeID != 'd5f120f8-ff8c-4aac-92ea-f2b5acbe9475' &&
         offer.Rewards[0].ItemTypeID != 'dd3bf334-87f3-40bd-b043-682a57a8dc3a';
 
-    if(!item || !offer) {
+    if (!item || !offer) {
         return (<Text>No Accessory found.</Text>)
     }
 
@@ -39,12 +39,13 @@ export default function AccessoryCard(props: any) {
                     props.setShowAccessoryScreen(true);
                 }
             }}>
-                <Image source={{uri: item.displayIcon}} resizeMode={'contain'} style={styles.itemImage} />
-                <Text style={styles.details}>{item.displayName}</Text>
-                <View style={styles.priceContainer}>
-                    <Image source={offer.Cost[currencyUuid.KP] ? Image_KP : Image_VP} style={styles.currency} />
-                    <Text style={styles.price}>{offer.Cost[currencyUuid.KP] ? offer.Cost[currencyUuid.KP] : offer.Cost[currencyUuid.VP]}</Text>
-                </View>
+            <Image source={{uri: item.displayIcon}} resizeMode={'contain'} style={styles.itemImage}/>
+            <Text style={styles.details}>{item.displayName}</Text>
+            <View style={styles.priceContainer}>
+                <Image source={offer.Cost[currencyUuid.KP] ? Image_KP : Image_VP} style={styles.currency}/>
+                <Text
+                    style={styles.price}>{offer.Cost[currencyUuid.KP] ? offer.Cost[currencyUuid.KP] : offer.Cost[currencyUuid.VP]}</Text>
+            </View>
         </TouchableOpacity>
     );
 }

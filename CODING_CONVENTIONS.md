@@ -1,8 +1,9 @@
 # Coding Conventions
-Last Updated: 03/05/2024
+Last Updated: 03/06/2024
 
 ## Code formatting
-- use standard eslint for code formatting on all files
+- use custom prettier settings (Plugin needed)
+- settings -> Languages & Frameworks -> Javascript Prettier -> Manual Conf. -> select project folder
 
 ## Interfaces and Types
 - always start with a capital i
@@ -10,4 +11,4 @@ Last Updated: 03/05/2024
 
 ## Enums
 - always start with a capital E
-- provides better overwith between enums, types, classes and functions
+- provides better overview between enums, types, classes and functions

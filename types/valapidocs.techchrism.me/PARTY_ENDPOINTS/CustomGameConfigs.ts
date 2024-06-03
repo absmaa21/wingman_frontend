@@ -33,7 +33,7 @@ export interface IQueueConfig {
     TimeUntilNextScheduleChangeSeconds: number;
     /** Array of strings in the format of "map:weight" */
     MapWeights: string[];
-};
+}
 
 export interface IGamePodPingServiceInfo {
     [x: string]: {
@@ -42,7 +42,7 @@ export interface IGamePodPingServiceInfo {
         PingProxyAddress: string;
         PingProxyAddresses: string[];
     };
-};
+}
 
 export interface ICustomGameConfigsResponse {
     Enabled: boolean;
@@ -50,4 +50,4 @@ export interface ICustomGameConfigsResponse {
     EnabledModes: string[];
     Queues: IQueueConfig[];
     GamePodPingServiceInfo: IGamePodPingServiceInfo;
-};
+}

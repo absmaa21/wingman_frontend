@@ -2,7 +2,7 @@ export interface IMatch {
     MatchID: string;
     GameStartTime: number;
     QueueID: string;
-};
+}
 
 export interface IMatchHistoryResponse {
     Subject: string;
@@ -10,7 +10,7 @@ export interface IMatchHistoryResponse {
     EndIndex: number;
     Total: number;
     History: IMatch[];
-};
+}
 
 export enum EQueueID {
     COMPETITIVE = "competitive",

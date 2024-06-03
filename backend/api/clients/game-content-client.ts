@@ -2,10 +2,8 @@ import {Client, ClientError} from '../client';
 import EnumError from '../error';
 import Result from '../result';
 import {Request, Response, Headers} from '../http/http';
-import axios, {AxiosHeaders, AxiosRequestConfig} from 'axios';
-import {IGameContent} from '../../valorant-api/game-content-api/game-content-types';
+import axios, {AxiosError, AxiosHeaders, AxiosRequestConfig} from 'axios';
 import 'text-encoding-polyfill';
-import VersionEndpoint from '../endpoints/game-content/version';
 
 export enum GameContentClientError {
     QUERY_FAILED,

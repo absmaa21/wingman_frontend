@@ -1,32 +1,32 @@
-import { EQueueAccessibility, IPartyCustomGameData, IPartyErrorNotification, IPartyMatchmakingData, IPartyMember } from "./ChangeQueue";
+import {IPartyCustomGameData, IPartyErrorNotification, IPartyMatchmakingData, IPartyMember} from "./Party.ts";
 
 export type LeaveMatchmakingQueueResponse = {
-    /** Party ID */
-    ID: string;
-    MUCName: string;
-    VoiceRoomID: string;
-    Version: number;
-    ClientVersion: string;
-    Members: IPartyMember[];
-    State: string;
-    PreviousState: string;
-    StateTransitionReason: string;
-    Accessibility: EQueueAccessibility;
-    CustomGameData: IPartyCustomGameData;
-    MatchmakingData: IPartyMatchmakingData;
-    Invites: null;
-    Requests: unknown[];
-    /** Date in ISO 8601 format */
-    QueueEntryTime: string;
-    ErrorNotification: IPartyErrorNotification;
-    RestrictedSeconds: number;
-    EligibleQueues: string[];
-    QueueIneligibilities: string[];
+    Accessibility: string;
     CheatData: {
         GamePodOverride: string;
         ForcePostGameProcessing: boolean;
     };
-    XPBonuses: unknown[];
+    ClientVersion: string;
+    CustomGameData: IPartyCustomGameData;
+    EligibleQueues: string[];
+    ErrorNotification: IPartyErrorNotification;
+    /** Party ID */
+    ID: string;
     /** Empty string when there is no invite code */
     InviteCode: string;
-};
+    Invites: null;
+    MUCName: string;
+    MatchmakingData: IPartyMatchmakingData;
+    Members: IPartyMember[];
+    PreviousState: string;
+    /** Date in ISO 8601 format */
+    QueueEntryTime: string;
+    QueueIneligibilities: string[];
+    Requests: unknown[];
+    RestrictedSeconds: number;
+    State: string;
+    StateTransitionReason: string;
+    Version: number;
+    VoiceRoomID: string;
+    XPBonuses: unknown[];
+}

@@ -6,81 +6,81 @@ import BottomBarTab from './BottomBarTab';
 import {useApi} from '../contexts/apiContext';
 
 export default function BottomBarNavigation({navigation}: any) {
-  const api = useApi();
+    const api = useApi();
 
-  const [activeTab, setActiveTab] = useState('Home');
-  const profileCardUuid =
-    APP_BUILD !== EAppBuild.FRONTEND
-      ? api.getUserApi().getActiveUser()
-      : '33c1f011-4eca-068c-9751-f68c788b2eee'; // TODO
+    const [activeTab, setActiveTab] = useState('Home');
+    const profileCardUuid =
+        APP_BUILD !== EAppBuild.FRONTEND
+            ? api.getUserApi().getActiveUser()?.cardID
+            : '33c1f011-4eca-068c-9751-f68c788b2eee';
 
-  function handlePagePress(tab: string) {
-    logInfo('BottomBarNavigation.tsx: Switching to ' + tab);
-    navigation.navigate(tab, tab);
-    setActiveTab(tab);
-  }
+    function handlePagePress(tab: string) {
+        logInfo('BottomBarNavigation.tsx: Switching to ' + tab);
+        navigation.navigate(tab, tab);
+        setActiveTab(tab);
+    }
 
-  return (
-    <View style={styles.container}>
-      <BottomBarTab
-        handlePagePress={handlePagePress}
-        tabName="Home"
-        iconName="home"
-        isActive={activeTab === 'Home'}
-      />
-      <BottomBarTab
-        handlePagePress={handlePagePress}
-        tabName="FavouritePage"
-        iconName="bag-personal"
-        isActive={activeTab === 'FavouritePage'}
-      />
+    return (
+        <View style={styles.container}>
+            <BottomBarTab
+                handlePagePress={handlePagePress}
+                tabName="Home"
+                iconName="home"
+                isActive={activeTab === 'Home'}
+            />
+            <BottomBarTab
+                handlePagePress={handlePagePress}
+                tabName="FavouritePage"
+                iconName="bag-personal"
+                isActive={activeTab === 'FavouritePage'}
+            />
 
-      <TouchableOpacity
-        style={styles.fabButton}
-        onPress={() => handlePagePress('Profile')}>
-        <Image
-          source={{
-            uri: `https://media.valorant-api.com/playercards/${profileCardUuid}/displayicon.png`,
-          }}
-          style={{width: 60, height: 60, borderRadius: 64}}
-        />
-      </TouchableOpacity>
+            <TouchableOpacity
+                style={styles.fabButton}
+                onPress={() => handlePagePress('Profile')}>
+                <Image
+                    source={{
+                        uri: `https://media.valorant-api.com/playercards/${profileCardUuid}/displayicon.png`,
+                    }}
+                    style={{width: 60, height: 60, borderRadius: 64}}
+                />
+            </TouchableOpacity>
 
-      <BottomBarTab
-        handlePagePress={handlePagePress}
-        tabName="Store"
-        iconName="cart"
-        isActive={activeTab === 'Store'}
-      />
-      <BottomBarTab
-        handlePagePress={handlePagePress}
-        tabName="Other"
-        iconName="apps"
-        isActive={activeTab === 'Other'}
-      />
-    </View>
-  );
+            <BottomBarTab
+                handlePagePress={handlePagePress}
+                tabName="Store"
+                iconName="cart"
+                isActive={activeTab === 'Store'}
+            />
+            <BottomBarTab
+                handlePagePress={handlePagePress}
+                tabName="Other"
+                iconName="apps"
+                isActive={activeTab === 'Other'}
+            />
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    height: 56,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    borderColor: 'rgba(255,255,255,.1)',
-    borderTopWidth: 1,
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    backgroundColor: Color.backgroundPrimary,
-  },
-  fabButton: {
-    width: 64,
-    height: 64,
-    borderRadius: 64,
-    justifyContent: 'center',
-    alignItems: 'center',
-    elevation: 6,
-    marginBottom: 26,
-    backgroundColor: Color.accent,
-  },
+    container: {
+        height: 56,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        borderColor: 'rgba(255,255,255,.1)',
+        borderTopWidth: 1,
+        alignItems: 'center',
+        paddingHorizontal: 16,
+        backgroundColor: Color.backgroundPrimary,
+    },
+    fabButton: {
+        width: 64,
+        height: 64,
+        borderRadius: 64,
+        justifyContent: 'center',
+        alignItems: 'center',
+        elevation: 6,
+        marginBottom: 26,
+        backgroundColor: Color.accent,
+    },
 });

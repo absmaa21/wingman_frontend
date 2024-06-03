@@ -16,21 +16,21 @@ function UserWallet({valorant_points, kingdom_points, radianite, kp_limit}: any)
         <View style={styles.playerCurrencyContainer}>
             {radianite >= 0 && (
                 <View style={styles.currency}>
-                    <Image source={Image_R} style={styles.currencyImage} />
+                    <Image source={Image_R} style={styles.currencyImage}/>
                     <Text style={styles.currencyText}>{radianite}</Text>
                 </View>
             )}
 
             {valorant_points >= 0 && (
                 <View style={styles.currency}>
-                    <Image source={Image_VP} style={styles.currencyImage} />
+                    <Image source={Image_VP} style={styles.currencyImage}/>
                     <Text style={styles.currencyText}>{valorant_points}</Text>
                 </View>
             )}
 
             {kingdom_points >= 0 && (
                 <View style={styles.currency}>
-                    <Image style={styles.currencyImage} source={Image_KP} />
+                    <Image style={styles.currencyImage} source={Image_KP}/>
                     <Text
                         style={[
                             styles.currencyText,

@@ -10,7 +10,7 @@ export interface ILeaderboardPlayer {
     rankedRating: number;
     numberOfWins: number;
     competitiveTier: number;
-};
+}
 
 export interface ITierDetails {
     [x: string]: {
@@ -18,7 +18,7 @@ export interface ITierDetails {
         startingPage: number;
         startingIndex: number;
     };
-};
+}
 
 export interface ILeaderboardResponse {
     Deployment: string;
@@ -32,4 +32,4 @@ export interface ILeaderboardResponse {
     tierDetails: ITierDetails;
     startIndex: number;
     query: string;
-};
+}

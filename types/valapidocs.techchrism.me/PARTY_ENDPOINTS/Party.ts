@@ -6,7 +6,7 @@ export interface IPartyMember {
         PlayerCardID: string;
         PlayerTitleID: string;
         AccountLevel: number;
-        PreferredLevelBorderID: string | "";
+        PreferredLevelBorderID: string;
         Incognito: boolean;
         HideAccountLevel: boolean;
     };
@@ -20,11 +20,7 @@ export interface IPartyMember {
     IsReady: boolean;
     IsModerator: boolean;
     UseBroadcastHUD: boolean;
-    PlatformType: EPlatformType;
-};
-
-export enum EPlatformType{
-    PC = "PC"
+    PlatformType: string;
 }
 
 export interface IPartyCustomGameSettings {
@@ -39,7 +35,7 @@ export interface IPartyCustomGameSettings {
         SkipMatchHistory?: string | undefined;
         TournamentMode?: string | undefined;
     } | null;
-};
+}
 
 export interface IPartyCustomGameMembership {
     teamOne: {
@@ -57,25 +53,25 @@ export interface IPartyCustomGameMembership {
     teamTwoCoaches: {
         Subject: string;
     }[] | null;
-};
+}
 
 export interface IPartyMatchmakingData {
     QueueID: string;
     PreferredGamePods: string[];
     SkillDisparityRRPenalty: number;
-};
+}
 
 export interface IPartyErrorNotification {
     ErrorType: string;
     ErroredPlayers: {
         Subject: string;
     }[] | null;
-};
+}
 
 export interface IPartyCheatData {
     GamePodOverride: string;
     ForcePostGameProcessing: boolean;
-};
+}
 
 export interface IPartyResponse {
     ID: string;
@@ -87,7 +83,7 @@ export interface IPartyResponse {
     State: string;
     PreviousState: string;
     StateTransitionReason: string;
-    Accessibility: EPartyAccessibility;
+    Accessibility: string;
     CustomGameData: IPartyCustomGameData;
     MatchmakingData: IPartyMatchmakingData;
     Invites: null;
@@ -102,7 +98,7 @@ export interface IPartyResponse {
     XPBonuses: unknown[];
     /** Empty string when there is no invite code */
     InviteCode: string;
-};
+}
 
 export interface IPartyCustomGameData {
     Settings: IPartyCustomGameSettings;

@@ -7,13 +7,13 @@ export interface IGun {
     SkinLevelID: string;
     ChromaID: string;
     Attachments: unknown[];
-};
+}
 
 export interface ISpray {
     EquipSlotID: string;
     SprayID: string;
     SprayLevelID: null;
-};
+}
 
 export interface IIdentity {
     PlayerCardID: string;
@@ -21,7 +21,7 @@ export interface IIdentity {
     AccountLevel: number;
     PreferredLevelBorderID: string;
     HideAccountLevel: boolean;
-};
+}
 
 export interface IPlayerLoadoutResponse {
     Subject: string;
@@ -30,4 +30,4 @@ export interface IPlayerLoadoutResponse {
     Sprays: ISpray[];
     Identity: IIdentity;
     Incognito: boolean;
-};
+}
