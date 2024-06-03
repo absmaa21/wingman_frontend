@@ -76,7 +76,6 @@ export default function StoreScreen() {
 
     function handleBundleClicked(bundle: any) {
         setChosenBundleContent(bundle);
-        logInfo(JSON.stringify(bundle.ItemOffers, null, 2));
         setBundleSkins([]);
         setBundleAccessories([]);
         bundle.ItemOffers.map((item: IStorefrontBundleItemOffer) => {
@@ -212,7 +211,7 @@ export default function StoreScreen() {
                             onRefresh={() => setReloadStoreData(true)}
                         />
                     }
-                    contentContainerStyle={styles.gap6}
+                    contentContainerStyle={[styles.gap6, {marginBottom: -24}]}
                     data={featuredItemsData}
                     renderItem={item => renderWeaponSkinCard(item.item)}
                     keyExtractor={item => item.OfferID}
@@ -259,7 +258,7 @@ export default function StoreScreen() {
                                     onRefresh={() => setReloadStoreData(true)}
                                 />
                             }
-                            contentContainerStyle={styles.gap6}
+                            contentContainerStyle={[styles.gap6, {marginBottom: -24}]}
                             data={accessoryItemsData}
                             renderItem={renderAccessoryCard}
                             keyExtractor={item => item.Offer.OfferID}
@@ -275,7 +274,7 @@ export default function StoreScreen() {
             <View style={styles.itemsContainer}>
                 <Text style={styles.nightmarketHeader}>Nightmarket</Text>
                 <FlatList
-                    contentContainerStyle={styles.gap6}
+                    contentContainerStyle={[styles.gap6, {marginBottom: -64}]}
                     data={nightmarketItemsData}
                     renderItem={item => renderWeaponSkinCard(item.item.Offer)}
                     keyExtractor={item => item.Offer.OfferID}
